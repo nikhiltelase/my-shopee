@@ -78,9 +78,9 @@ function ItemList({ items }) {
               <div
                 className={`${
                   addButtonId == item.id
-                    ? "opacity-100 w-auto h-full pb-4"
-                    : "opacity-0 w-0 h-0"
-                } justify-center items-end  transition-opacity duration-500`}
+                    ? "opacity-100 "
+                    : "opacity-0"
+                } hidden w-0 h-0 xl:w-auto xl:h-full xl:pb-4 xl:block transition-opacity duration-500`}
               >
                 <button
                   onClick={() => addToCart(item)}
