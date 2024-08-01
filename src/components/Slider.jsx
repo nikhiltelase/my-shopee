@@ -35,11 +35,11 @@ const offers = [
 ];
 
 const OfferSlider = () => {
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 640);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 1024);
+      setIsLargeScreen(window.innerWidth >= 640);
     };
 
     window.addEventListener("resize", handleResize);

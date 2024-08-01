@@ -9,7 +9,7 @@ function Home() {
   const { items} = useContext(contextData)
 
   return (
-    <div className="w-full bg-slate-200">
+    <div className="w-screen bg-white">
       <CategoryLinks />
       <OfferSlider />
       <ItemList items={items} />
