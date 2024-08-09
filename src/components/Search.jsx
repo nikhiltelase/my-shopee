@@ -55,7 +55,7 @@ function Search() {
           {searchItems.length > 0 ? (
             searchItems.map((item, index) => (
               <Link
-                to={`item/${item.id}`}
+                to={`item/${item._id}`}
                 key={index}
                 onClick={handleSuggestionClick}
               >

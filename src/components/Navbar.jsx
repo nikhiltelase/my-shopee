@@ -5,9 +5,8 @@ import { contextData } from "../context/ContextApi";
 import Search from "./Search";
 
 function Navbar() {
-  const { cart } = useContext(contextData);
+  const { cart, currentUser } = useContext(contextData);
   const [scrollY, setScrollY] = useState(0);
-  // console.log(scrollY)
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -53,20 +52,35 @@ function Navbar() {
             </div>
           </div>
 
-          <div className={`w-full fixed  ${scrollY > 60 ? "top-0" : 'top-16'} sm:static z-50 bg-white sm:bg-transparent sm:w-auto xl:w-3/4`}>
+          <div
+            className={`w-full fixed  ${
+              scrollY > 60 ? "top-0" : "top-16"
+            } sm:static z-50 bg-white sm:bg-transparent sm:w-auto xl:w-3/4`}
+          >
             <div className="shadow-lg m-2  rounded-lg  sm:shadow-none sm:m-0">
               <Search />
             </div>
           </div>
 
           <div className="hidden sm:flex items-center gap-4 sm:gap-6">
-            <Link
-              to="/login"
-              className="text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 hover:opacity-80"
-            >
-              <FaRegUserCircle />
-              Login
-            </Link>
+            {currentUser ? (
+              <Link
+                to="/profile"
+                className="text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 hover:opacity-80"
+              >
+                <FaRegUserCircle />
+                {currentUser.name.split(" ")[0]}
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 hover:opacity-80"
+              >
+                <FaRegUserCircle />
+                Login
+              </Link>
+            )}
+
             <Link
               to="/cart"
               className="text-white text-2xl sm:text-3xl relative cursor-pointer hover:opacity-80 select-none"

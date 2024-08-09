@@ -24,7 +24,7 @@ function getRelatedItems(viewItem, items) {
     ...lastWordMatches,
     ...firstWordMatches,
     ...categoryMatches,
-  ].filter((item) => item.id !== viewItem.id);
+  ].filter((item) => item._id !== viewItem._id);
 
   return relatedItems;
 }

@@ -12,7 +12,7 @@ const offers = [
     imgSrc2:
       "https://images-eu.ssl-images-amazon.com/images/G/31/IMG24/Smart_Watches/MED_MAY/Tall_Hero_1500X600_BAU_NewLaunches._CB554931622_.jpg",
     alt: "Offer 1",
-    link: "/item/1",
+    link: "",
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const offers = [
     imgSrc2:
       "https://images-eu.ssl-images-amazon.com/images/G/31/img22/Wireless/devjyoti/GW/Uber/Nov/D103625178_DesktopTallHero_3000x1200_V3._CB558389732_.jpg",
     alt: "Offer 2",
-    link: "/item/9",
+    link: "",
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ const offers = [
     imgSrc2:
       "https://images-eu.ssl-images-amazon.com/images/G/31/img21/MA2024/GW/July/Unrec/3000/1._CB569386741_.jpg",
     alt: "Offer 3",
-    link: "/item/13",
+    link: "",
   },
 ];
 

@@ -12,7 +12,7 @@ function ItemList({ items }) {
 
   const addButtonFunction = (item) => {
     addToCart(item);
-    const itemInCart = isItemInCart(item.id);
+    const itemInCart = isItemInCart(item._id);
     if (itemInCart) {
       navigate("/cart");
     }
@@ -49,21 +49,21 @@ function ItemList({ items }) {
             <div
               key={index}
               className=" w-full rounded-lg overflow-hidden shadow-lg bg-white flex flex-col justify-between items-center transform transition-transform duration-500 hover:shadow-2xl"
-              onMouseEnter={() => setAddButtonId(item.id)}
+              onMouseEnter={() => setAddButtonId(item._id)}
             >
-              <Link to={`/item/${item.id}`} className="z-10 w-full">
+              <Link to={`/item/${item._id}`} className="z-10 w-full">
                 <div className="w-full h-full ">
                   <div className="bg-white w-full h-full relative z-10 hover:opacity-0 p-1 sm:px-4 lg:pt-6 duration-500">
                     <img
                       className="w-full h-32 sm:h-48 lg:h-60 object-contain "
-                      src={item.imgUrl[0]}
+                      src={item.imgUrls[0]}
                       alt={item.name}
                     />
                   </div>
                   <div className="bg-white w-full absolute top-0 left-0  sm:px-4 lg:pt-6 transition-opacity duration-1000">
                     <img
                       className=" w-full h-32 sm:h-48 lg:h-60 bg-white object-contain "
-                      src={item.imgUrl[1] ? item.imgUrl[1] : item.imgUrl[0]}
+                      src={item.imgUrls[1] ? item.imgUrls[1] : item.imgUrls[0]}
                       alt={item.name}
                     />
                   </div>
@@ -71,7 +71,7 @@ function ItemList({ items }) {
               </Link>
 
               <div className="px-2 py-2 sm:px-6 sm:py-4 text-center">
-                <Link to={`item/${item.id}`}>
+                <Link to={`item/${item._id}`}>
                   <div className="font-bold text-sm sm:text-xl mb-2 text-gray-800">
                     {item.name}
                   </div>
@@ -88,18 +88,18 @@ function ItemList({ items }) {
 
               <div
                 className={`${
-                  addButtonId == item.id ? "opacity-100 " : "opacity-0"
+                  addButtonId == item._id ? "opacity-100 " : "opacity-0"
                 } hidden w-0 h-0 xl:w-auto xl:h-full xl:pb-4 xl:block transition-opacity duration-500`}
               >
                 <button
                   onClick={() => addButtonFunction(item)}
                   className={`${
-                    isItemInCart(item.id)
+                    isItemInCart(item._id)
                       ? "bg-green-500 hover:bg-green-700"
                       : "bg-indigo-500 hover:bg-indigo-700"
                   } text-white font-bold py-2 px-4 rounded-full transform transition-transform duration-500 hover:scale-110`}
                 >
-                  {isItemInCart(item.id) ? "view cart" : "add to cart"}
+                  {isItemInCart(item._id) ? "view cart" : "add to cart"}
                 </button>
               </div>
             </div>

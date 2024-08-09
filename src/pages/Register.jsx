@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import axios from "axios";
+import { ShowToast } from "../utils/ToastUtils";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,10 +12,9 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
 
   const nameRef = useRef(null);
   const emailRef = useRef(null);
@@ -23,70 +24,103 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: name === "mobile" ? value.slice(0, 10) : value,
     });
   };
 
   const validateForm = () => {
     let formErrors = {};
-    let isValid = true;
+    let firstErrorField = null;
 
     if (!formData.name) {
       formErrors.name = "Name is required";
-      nameRef.current.focus();
-      isValid = false;
+      if (!firstErrorField) {
+        firstErrorField = nameRef;
+      }
     }
 
     if (!formData.email) {
       formErrors.email = "Email is required";
-      emailRef.current.focus();
-      isValid = false;
-    } else if (!formData.email.includes("@")) {
+      if (!firstErrorField) {
+        firstErrorField = emailRef;
+      }
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
       formErrors.email = "Please enter a valid email";
-      emailRef.current.focus();
-      isValid = false;
+      if (!firstErrorField) {
+        firstErrorField = emailRef;
+      }
     }
 
     if (!formData.mobile) {
       formErrors.mobile = "Mobile number is required";
-      mobileRef.current.focus();
-      isValid = false;
+      if (!firstErrorField) {
+        firstErrorField = mobileRef;
+      }
+    } else if (formData.mobile.length !== 10) {
+      formErrors.mobile = "Please enter a valid mobile number";
+      if (!firstErrorField) {
+        firstErrorField = mobileRef;
+      }
     }
 
     if (!formData.password) {
       formErrors.password = "Password is required";
-      passwordRef.current.focus();
-      isValid = false;
+      if (!firstErrorField) {
+        firstErrorField = passwordRef;
+      }
     } else if (formData.password.length < 8) {
       formErrors.password = "Password length must be 8 or more characters";
-      passwordRef.current.focus();
-      isValid = false;
+      if (!firstErrorField) {
+        firstErrorField = passwordRef;
+      }
     }
 
     if (formData.password !== formData.confirmPassword) {
       formErrors.confirmPassword = "Passwords do not match";
-      confirmPasswordRef.current.focus();
-      isValid = false;
+      if (!firstErrorField) {
+        firstErrorField = confirmPasswordRef;
+      }
     }
 
     setErrors(formErrors);
-    return isValid;
+
+    if (firstErrorField) {
+      firstErrorField.current.focus();
+      return false;
+    }
+
+    return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      setSuccessMessage("Submitted successfully");
-      // Make API call here
-      console.log("Form Data:", formData);
+      //making api call
+      try {
+        const { data } = await axios.post(
+          "http://localhost:1111/user/register",
+          formData
+        );
+        if (data.success) {
+          ShowToast("User registered successfully!");
+          navigate("/login");
+        } else {
+          ShowToast(data.message, "error");
+        }
+      } catch (error) {
+        console.log("Error:", error.message);
+        ShowToast(error.response.data.message || "An error occurred.", "error");
+      }
     }
   };
+  
 
   return (
     <>
-      <div className="container mx-auto h-screen flex justify-center items-center sm:mt-7 ">
+      <div className="container mx-auto h-screen flex justify-center items-center sm:mt-7">
         <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
           <form onSubmit={handleSubmit}>
@@ -104,14 +138,16 @@ const Register = () => {
                   errors.name ? "border-red-500" : "border-gray-300"
                 }`}
               />
-              <p className="text-red-500 text-xs italic">{errors.name}</p>
+              {errors.name && (
+                <p className="text-red-500 text-xs italic">{errors.name}</p>
+              )}
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Email
               </label>
               <input
-                type="email"
+                type="text"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
@@ -120,7 +156,9 @@ const Register = () => {
                   errors.email ? "border-red-500" : "border-gray-300"
                 }`}
               />
-              <p className="text-red-500 text-xs italic">{errors.email}</p>
+              {errors.email && (
+                <p className="text-red-500 text-xs italic">{errors.email}</p>
+              )}
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -136,14 +174,14 @@ const Register = () => {
                   errors.mobile ? "border-red-500" : "border-gray-300"
                 }`}
               />
-              <p className="text-red-500 text-xs italic">{errors.mobile}</p>
+              {errors.mobile && (
+                <p className="text-red-500 text-xs italic">{errors.mobile}</p>
+              )}
             </div>
-
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Password
               </label>
-
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -163,15 +201,14 @@ const Register = () => {
                   {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                 </button>
               </div>
-
-              <p className="text-red-500 text-xs italic">{errors.password}</p>
+              {errors.password && (
+                <p className="text-red-500 text-xs italic">{errors.password}</p>
+              )}
             </div>
-
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Confirm Password
               </label>
-
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -193,12 +230,12 @@ const Register = () => {
                   {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                 </button>
               </div>
-
-              <p className="text-red-500 text-xs italic">
-                {errors.confirmPassword}
-              </p>
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.confirmPassword}
+                </p>
+              )}
             </div>
-
             <div className="flex items-center justify-between">
               <button
                 type="submit"
@@ -208,7 +245,7 @@ const Register = () => {
               </button>
             </div>
           </form>
-          <p className="text-green-500 text-xs italic">{successMessage}</p>
+
           <p className="text-center text-gray-600 mt-4">
             Already have an account?{" "}
             <Link to="/login" className="text-blue-500 hover:underline">

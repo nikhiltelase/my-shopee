@@ -1,41 +1,82 @@
 import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import { showToast } from "../utils/toastUtils";
+import { ShowToast } from "../utils/ToastUtils";
 
 export const contextData = createContext(null);
 
 function ContextApi(props) {
   const [cart, setCart] = useState([]);
   const [items, setItems] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
-  async function getData() {
-    const { data } = await axios.get("/data.json");
-    setItems(data);
-  }
+  const getItemData = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:1111/item/all-items");
+      if (data.success) {
+        setItems(data.items);
+      } else {
+        ShowToast("Failed to fetch items", "error");
+      }
+    } catch (error) {
+      console.error("Error fetching items:", error);
+      ShowToast("An error occurred while fetching items.", "error");
+    }
+  };
+
+  const getCurrentUser = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        ShowToast("Please log in to access your account", "warning");
+        return;
+      }
+      const { data } = await axios.get(
+        "http://localhost:1111/user/currentUser",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (data.success) {
+        setCurrentUser(data.user);
+      } else {
+        ShowToast("Failed to fetch user data", "error");
+      }
+    } catch (error) {
+      console.error("Error fetching current user:", error);
+      ShowToast("Session expired, please log in again.", "error");
+      localStorage.removeItem("authToken");
+    }
+  };
 
   useEffect(() => {
-    getData();
+    getItemData();
+    getCurrentUser();
   }, []);
 
   const addToCart = (item) => {
-    let existingItem = cart.some((cartItem) => cartItem.id === item.id);
+    let existingItem = cart.some((cartItem) => cartItem._id === item._id);
     if (!existingItem) {
       setCart([...cart, { ...item, quantity: 1 }]);
-      showToast(`Successfully added ${item.name}`)
+      ShowToast(`Successfully added ${item.name}`);
+    } else {
+      ShowToast(`${item.name} is already in the cart`, "info");
     }
-    
   };
 
   const isItemInCart = (itemId) => {
-    return cart.some((cartItem) => cartItem.id === itemId);
+    return cart.some((cartItem) => cartItem._id === itemId);
   };
 
   const contextValue = {
     items,
     cart,
+    currentUser,
     setCart,
     addToCart,
     isItemInCart,
+    getCurrentUser
   };
 
   return (

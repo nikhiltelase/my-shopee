@@ -1,20 +1,21 @@
-import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; 
+import React, { useState, useRef, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import axios from "axios";
+import { ShowToast } from "../utils/ToastUtils";
+import { contextData } from "../context/ContextApi";
 
 const Login = () => {
+  const { getCurrentUser } = useContext(contextData);
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
-
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  });
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -28,41 +29,68 @@ const Login = () => {
   };
 
   const validateForm = () => {
-    let formErrors = {};
-    let isValid = true;
-
-    setErrors({
-      email: "",
-      password: "",
-    });
+    let firstErrorField = null;
 
     if (!user.email) {
-      formErrors.email = "Email is required";
-      emailRef.current.focus();
-      isValid = false;
-    } else if (!user.email.includes("@")) {
-      formErrors.email = "Please enter a valid email";
-      emailRef.current.focus();
-      isValid = false;
+      setEmailError("Email is required");
+      if (!firstErrorField) {
+        firstErrorField = emailRef;
+      }
+    } else if (!/^\S+@\S+\.\S+$/.test(user.email)) {
+      setEmailError("Please enter a valid email");
+      if (!firstErrorField) {
+        firstErrorField = emailRef;
+      }
+    } else {
+      setEmailError("");
+    }
+    if (!user.password) {
+      setPasswordError("Password is required");
+      if (!firstErrorField) {
+        firstErrorField = passwordRef;
+      }
+    } else {
+      setPasswordError("");
     }
 
-    if (!user.password) {
-      formErrors.password = "Password is required";
-      passwordRef.current.focus();
-      isValid = false;
-    } 
+    if (firstErrorField) {
+      firstErrorField.current.focus();
+      return false;
+    }
 
-    setErrors(formErrors);
-    return isValid;
+    return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      setSuccessMessage("Submitted successfully");
       // Make API call here
-      console.log("Email:", user.email);
-      console.log("Password:", user.password);
+      try {
+        const { data } = await axios.post(
+          "http://localhost:1111/user/login",
+          user
+        );
+        if (data.success) {
+          localStorage.setItem("authToken", data.token);
+          ShowToast("Login successfully!");
+          getCurrentUser()
+          navigate("/");
+        } else {
+          ShowToast(data.message, "error");
+        }
+      } catch (error) {
+        console.log(error);
+        const errorMessage = error.response.data.message;
+        if (errorMessage === "User not found.") {
+          setEmailError("this is email is not registered");
+          emailRef.current.focus();
+        } else if (errorMessage === "Incorrect password.") {
+          setPasswordError(errorMessage);
+          passwordRef.current.focus();
+        } else {
+          ShowToast(errorMessage || "An error occurred.", "error");
+        }
+      }
     }
   };
 
@@ -83,10 +111,10 @@ const Login = () => {
                 onChange={handleChange}
                 ref={emailRef}
                 className={`shadow border-2 rounded w-full py-2 px-3 text-gray-700 outline-none ${
-                  errors.email ? "border-red-500" : "border-gray-300"
+                  emailError ? "border-red-500" : "border-gray-300"
                 }`}
               />
-              <p className="text-red-500 text-xs italic">{errors.email}</p>
+              <p className="text-red-500 text-xs italic">{emailError}</p>
             </div>
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -101,7 +129,7 @@ const Login = () => {
                   onChange={handleChange}
                   ref={passwordRef}
                   className={`shadow border-2 rounded w-full py-2 px-3 text-gray-700 outline-none ${
-                    errors.password ? "border-red-500" : "border-gray-300"
+                    passwordError ? "border-red-500" : "border-gray-300"
                   }`}
                 />
                 <button
@@ -112,11 +140,14 @@ const Login = () => {
                   {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                 </button>
               </div>
-              
-              <p className="text-red-500 text-xs italic">{errors.password}</p>
+
+              <p className="text-red-500 text-xs italic">{passwordError}</p>
             </div>
             <div className="flex items-center justify-between mb-4">
-              <Link to="/forget-password" className="text-blue-500 hover:underline text-sm">
+              <Link
+                to="/forget-password"
+                className="text-blue-500 hover:underline text-sm"
+              >
                 Forgot Password?
               </Link>
             </div>
@@ -129,7 +160,6 @@ const Login = () => {
               </button>
             </div>
           </form>
-          <p className="text-green-500 text-xs italic">{successMessage}</p>
           <p className="text-center text-gray-600 mt-4">
             Don't have an account?{" "}
             <Link to="/register" className="text-blue-500 hover:underline">

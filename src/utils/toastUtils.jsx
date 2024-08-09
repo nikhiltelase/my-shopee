@@ -1,17 +1,16 @@
 import { toast } from "react-toastify";
 
-export const showToast = (message, type = "success") => {
-  const toastOptions = {
-    position: "bottom-center",
-    autoClose: 1000,
+export const ShowToast = (message, type = "success") => {
+  const toastOptions ={
+    position: "top-center",
+    autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
-    pauseOnHover: false,
+    pauseOnHover: true,
     draggable: true,
     progress: undefined,
     theme: "light",
-  };
-
+    }
   if (type === "success") {
     toast.success(message, toastOptions);
   } else if (type === "error") {

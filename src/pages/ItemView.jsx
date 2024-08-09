@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { contextData } from "../context/ContextApi";
 import RelatedItems from "../components/RelatedItems";
@@ -24,13 +24,14 @@ function ItemView() {
   const navigate = useNavigate();
   const { items, addToCart, isItemInCart } = useContext(contextData);
   const { itemId } = useParams();
-  const viewItem = items.find((item) => item.id === parseInt(itemId));
+
+  const viewItem = items.find((item) => item._id == itemId);
   const [mainImg, setMainImg] = useState("");
   const [imgBorderIndex, setImgBorderIndex] = useState(0);
 
   const addButtonFunction = (item) => {
     addToCart(item);
-    const itemInCart = isItemInCart(item.id);
+    const itemInCart = isItemInCart(item._id);
     if (itemInCart) {
       navigate("/cart");
     }
@@ -38,7 +39,7 @@ function ItemView() {
 
   useEffect(() => {
     if (viewItem) {
-      setMainImg(viewItem.imgUrl[0]);
+      setMainImg(viewItem.imgUrls[0]);
       setImgBorderIndex(0);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -48,7 +49,7 @@ function ItemView() {
     return <div className="text-center mt-10">Item not found</div>;
   }
 
-  const isAddedToCart = isItemInCart(viewItem.id);
+  const isAddedToCart = isItemInCart(viewItem._id);
   const specifications = Specifications(viewItem.specification);
 
   function buyNow(item) {
@@ -73,7 +74,7 @@ function ItemView() {
               />
             </div>
             <div className="p-1 img-container flex items-center lg:flex-col lg:h-96 overflow-auto">
-              {viewItem.imgUrl.map((img, index) => (
+              {viewItem.imgUrls.map((img, index) => (
                 <img
                   src={img}
                   className={`${

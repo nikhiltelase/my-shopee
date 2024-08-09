@@ -3,7 +3,7 @@ import { TiPlus, TiMinus } from "react-icons/ti";
 import { contextData } from "../context/ContextApi";
 import { Link } from "react-router-dom";
 import Popup from "../components/Popup";
-import { showToast } from "../utils/toastUtils";
+import { ShowToast } from "../utils/ToastUtils";
 
 function CartList() {
   const { cart, setCart } = useContext(contextData);
@@ -19,7 +19,7 @@ function CartList() {
     const updatedCart = cart.filter((item) => item !== removeItem);
     setCart(updatedCart);
     setShowPopup(false);
-    showToast(`Successfully removed ${removeItem.name}`);
+    ShowToast(`Successfully removed ${removeItem.name}`);
   };
 
   const removeFromCart = (item) => {
@@ -40,6 +40,7 @@ function CartList() {
 
   return (
     <>
+    
       {showPopup && (
         <Popup
           message="Are you sure to remove!"
@@ -62,11 +63,11 @@ function CartList() {
                   <div className="flex">
                     <img
                       className="w-20 h-20 sm:w-32 sm:h-32 object-contain"
-                      src={item.imgUrl[0]}
+                      src={item.imgUrls[0]}
                       alt={item.name}
                     />
                     <div className="flex flex-col justify-center ml-2 sm:ml-4">
-                      <Link to={`/item/${item.id}`}>
+                      <Link to={`/item/${item._id}`}>
                         <h2 className="font-bold text-sm sm:text-lg lg:text-xl mb-2 text-gray-800 hover:text-blue-700 transition-all duration-300">
                           {item.name}
                         </h2>

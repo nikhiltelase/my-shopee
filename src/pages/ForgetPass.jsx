@@ -27,7 +27,7 @@ const ForgotPassword = () => {
       formErrors.email = "Email is required";
       emailRef.current.focus();
       isValid = false;
-    } else if (!email.includes("@")) {
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
       formErrors.email = "Please enter a valid email";
       emailRef.current.focus();
       isValid = false;
@@ -57,26 +57,35 @@ const ForgotPassword = () => {
 
   const validatePassword = () => {
     let formErrors = {};
-    let isValid = true;
+    let firstErrorField = null;
 
     if (!newPassword) {
       formErrors.password = "Password is required";
-      passwordRef.current.focus();
-      isValid = false;
+      if (!firstErrorField) {
+        firstErrorField = passwordRef;
+      }
     } else if (newPassword.length < 8) {
       formErrors.password = "Password length must be 8 or more characters";
-      passwordRef.current.focus();
-      isValid = false;
+      if (!firstErrorField) {
+        firstErrorField = passwordRef;
+      }
     }
 
     if (newPassword !== confirmPassword) {
       formErrors.confirmPassword = "Passwords do not match";
-      confirmPasswordRef.current.focus();
-      isValid = false;
+      if (!firstErrorField) {
+        firstErrorField = confirmPasswordRef;
+      }
     }
 
     setErrors(formErrors);
-    return isValid;
+
+    if (firstErrorField) {
+      firstErrorField.current.focus();
+      return false;
+    }
+
+    return true;
   };
 
   const handleOtpField = (e) => {
