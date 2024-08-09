@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; 
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -127,7 +127,7 @@ const Register = () => {
                 Mobile
               </label>
               <input
-                type="tel"
+                type="number"
                 name="mobile"
                 value={formData.mobile}
                 onChange={handleChange}
@@ -138,6 +138,7 @@ const Register = () => {
               />
               <p className="text-red-500 text-xs italic">{errors.mobile}</p>
             </div>
+
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Password
@@ -165,6 +166,7 @@ const Register = () => {
 
               <p className="text-red-500 text-xs italic">{errors.password}</p>
             </div>
+
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Confirm Password
@@ -178,7 +180,9 @@ const Register = () => {
                   onChange={handleChange}
                   ref={confirmPasswordRef}
                   className={`shadow border-2 rounded w-full py-2 px-3 text-gray-700 outline-none ${
-                    errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                    errors.confirmPassword
+                      ? "border-red-500"
+                      : "border-gray-300"
                   }`}
                 />
                 <button
@@ -189,17 +193,18 @@ const Register = () => {
                   {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                 </button>
               </div>
-              
+
               <p className="text-red-500 text-xs italic">
                 {errors.confirmPassword}
               </p>
             </div>
+
             <div className="flex items-center justify-between">
               <button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
-               Register
+                Register
               </button>
             </div>
           </form>

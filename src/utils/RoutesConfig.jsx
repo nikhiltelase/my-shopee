@@ -8,6 +8,7 @@ const Checkout = lazy(() => import("../pages/Checkout"));
 const OrderSuccess = lazy(() => import("../pages/OrderSuccess"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
+const ForgetPass = lazy(() => import("../pages/ForgetPass"));
 
 function RoutesConfig() {
   const routes = [
@@ -42,6 +43,10 @@ function RoutesConfig() {
     {
       route: "/register",
       element: <Register />,
+    },
+    {
+      route: "/forget-password",
+      element: <ForgetPass />,
     }
   ];
 

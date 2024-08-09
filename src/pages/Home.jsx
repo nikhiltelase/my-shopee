@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import CategoryLinks from "../components/CategoryLinks";
 import OfferSlider from "../components/Slider";
 import ItemList from "../components/ItemList";

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { TiPlus, TiMinus } from "react-icons/ti";
 import { contextData } from "../context/ContextApi";
 import { Link } from "react-router-dom";
-import Confirmation from "../components/Popup";
+import Popup from "../components/Popup";
 import { showToast } from "../utils/toastUtils";
 
 function CartList() {
@@ -41,7 +41,7 @@ function CartList() {
   return (
     <>
       {showPopup && (
-        <Confirmation
+        <Popup
           message="Are you sure to remove!"
           onClose={onClose}
           onConfirm={onConfirm}

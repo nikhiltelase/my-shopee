@@ -50,11 +50,7 @@ const Login = () => {
       formErrors.password = "Password is required";
       passwordRef.current.focus();
       isValid = false;
-    } else if (user.password.length < 8) {
-      formErrors.password = "Password length must be 8 or more characters";
-      passwordRef.current.focus();
-      isValid = false;
-    }
+    } 
 
     setErrors(formErrors);
     return isValid;
@@ -92,7 +88,7 @@ const Login = () => {
               />
               <p className="text-red-500 text-xs italic">{errors.email}</p>
             </div>
-            <div className="mb-6 ">
+            <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Password
               </label>
@@ -118,6 +114,11 @@ const Login = () => {
               </div>
               
               <p className="text-red-500 text-xs italic">{errors.password}</p>
+            </div>
+            <div className="flex items-center justify-between mb-4">
+              <Link to="/forget-password" className="text-blue-500 hover:underline text-sm">
+                Forgot Password?
+              </Link>
             </div>
             <div className="flex items-center justify-between">
               <button

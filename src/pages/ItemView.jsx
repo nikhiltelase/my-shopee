@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { contextData } from "../context/ContextApi";
-import CategoryLinks from "../components/CategoryLinks";
 import RelatedItems from "../components/RelatedItems";
 
 const Specifications = (specification) => {

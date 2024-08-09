@@ -9,16 +9,26 @@
   font-weight: 500;
   font-style: normal;
 }
+
 /* item-view css */
 .img-container::-webkit-scrollbar {
   display: none;
   scroll-behavior: smooth;
 }
-.img-container{
+
+.img-container {
   user-select: none;
 }
+
 /* category links css */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Hide increment and decrement buttons in number field*/
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
