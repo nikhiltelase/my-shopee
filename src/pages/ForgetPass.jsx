@@ -199,7 +199,7 @@ const ForgotPassword = () => {
             <form onSubmit={handleForgetPassword}>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Password
+                  New Password
                 </label>
 
                 <div className="relative">
