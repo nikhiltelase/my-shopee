@@ -50,6 +50,12 @@ function ContextApi(props) {
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("authToken")
+    setCurrentUser(null)
+    ShowToast("Please log in to access your account", "warning");
+  }
+
   useEffect(() => {
     getItemData();
     getCurrentUser();
@@ -76,7 +82,8 @@ function ContextApi(props) {
     setCart,
     addToCart,
     isItemInCart,
-    getCurrentUser
+    getCurrentUser,
+    logout
   };
 
   return (
