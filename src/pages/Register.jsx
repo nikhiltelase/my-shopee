@@ -33,7 +33,7 @@ const Register = () => {
 
   const validateForm = () => {
     let formErrors = {};
-    let firstErrorField = null;
+    let firstErrorField = null;0
 
     if (!formData.name) {
       formErrors.name = "Name is required";

@@ -27,7 +27,7 @@ function Navbar() {
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
           <div className="flex justify-between w-full sm:w-auto">
             <Link
-              to="/"
+              to={"/"}
               className="logo text-white text-2xl sm:text-3xl font-bold hover:opacity-80"
             >
               My Shopee
@@ -36,17 +36,15 @@ function Navbar() {
             {/* small screen  */}
             <div className="flex items-center gap-4 sm:gap-6 sm:hidden">
               {currentUser ? (
-                <Link to={"/profile/userDetails"}>
-                  <div
-                    onMouseEnter={() => setShowDropDown(true)}
-                    onMouseLeave={() => setShowDropDown(false)}
-                    className="relative text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 cursor-pointer"
-                  >
-                    <FaRegUserCircle />
-                    {currentUser.name.split(" ")[0]}
-                    {showDropDown && <ProfileDropdown />}
-                  </div>
-                </Link>
+                <div
+                  onMouseEnter={() => setShowDropDown(true)}
+                  onMouseLeave={() => setShowDropDown(false)}
+                  className="relative text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 cursor-pointer"
+                >
+                  <FaRegUserCircle />
+                  {currentUser.name.split(" ")[0]}
+                  {showDropDown && <ProfileDropdown />}
+                </div>
               ) : (
                 <Link
                   to="/login"
@@ -83,17 +81,15 @@ function Navbar() {
           {/* large screen  */}
           <div className="hidden sm:flex items-center gap-4 sm:gap-10">
             {currentUser ? (
-              <Link to={"/profile/userDetails"}>
-                <div
-                  onMouseEnter={() => setShowDropDown(true)}
-                  onMouseLeave={() => setShowDropDown(false)}
-                  className="relative text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 cursor-pointer "
-                >
-                  <FaRegUserCircle />
-                  {currentUser.name.split(" ")[0]}
-                  {showDropDown && <ProfileDropdown />}
-                </div>
-              </Link>
+              <div
+                onMouseEnter={() => setShowDropDown(true)}
+                onMouseLeave={() => setShowDropDown(false)}
+                className="relative text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 cursor-pointer "
+              >
+                <FaRegUserCircle />
+                {currentUser.name.split(" ")[0]}
+                {showDropDown && <ProfileDropdown />}
+              </div>
             ) : (
               <Link
                 to="/login"
