@@ -1,5 +1,6 @@
 import React, { lazy } from "react";
 import Profile from "../pages/Profile";
+import OrderDetails from "../pages/OrderDetails";
 
 const Home = lazy(() => import("../pages/Home"));
 const CartList = lazy(() => import("../pages/CartList"));
@@ -44,10 +45,17 @@ function RoutesConfig() {
     {
       route: "/register",
       element: <Register />,
+    },{
+      route: "/forget-password",
+      element: <ForgetPass />,
     },
     {
       route: "/profile/:option",
       element: <Profile />,
+    },
+    {
+      route: "/order-details",
+      element: <OrderDetails/>,
     },
   ];
 

@@ -6,18 +6,19 @@ import {
   FaClipboardList,
   FaHeart,
   FaBell,
+  FaAddressBook,
   FaSignOutAlt,
 } from "react-icons/fa";
 import { contextData } from "../context/ContextApi";
 
 const ProfileDropdown = () => {
-  const {logout} = useContext(contextData)
+  const { logout } = useContext(contextData);
   return (
     <>
       <IoTriangleSharp className="text-white absolute top-7 left-10" />
       <div className="absolute top-10 -left-10 mt-2 w-fit bg-white rounded-lg shadow-lg overflow-hidden z-10">
         <Link
-          to="/profile/profile"
+          to="/profile/userDetails"
           className="flex items-center px-4 py-4 overflow-hidden text-gray-800 hover:bg-gray-200"
         >
           <FaUser className="mr-2 text-blue-500" size={18} />
@@ -47,6 +48,14 @@ const ProfileDropdown = () => {
           <span className="text-sm font-semibold">Notifications</span>
         </Link>
         <Link
+          to="/profile/contact"
+          className="flex items-center px-4 py-4 overflow-hidden text-gray-800 hover:bg-gray-200"
+        >
+          <FaAddressBook className="mr-2 text-blue-500" size={18} />
+          <span className="text-sm font-semibold">Contact</span>
+        </Link>
+
+        <Link
           to=""
           className="flex items-center px-4 py-4 overflow-hidden text-gray-800 hover:bg-gray-200"
           onClick={() => logout()}
@@ -54,6 +63,7 @@ const ProfileDropdown = () => {
           <FaSignOutAlt className="mr-2 text-blue-500" size={18} />
           <span className="text-sm font-semibold">Logout</span>
         </Link>
+        
       </div>
     </>
   );

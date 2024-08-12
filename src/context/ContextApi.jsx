@@ -53,6 +53,7 @@ function ContextApi(props) {
   const logout = () => {
     localStorage.removeItem("authToken")
     setCurrentUser(null)
+    
     ShowToast("Please log in to access your account", "warning");
   }
 
@@ -79,6 +80,7 @@ function ContextApi(props) {
     items,
     cart,
     currentUser,
+    setCurrentUser,
     setCart,
     addToCart,
     isItemInCart,

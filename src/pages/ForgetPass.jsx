@@ -1,18 +1,25 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import axios from "axios";
+import { ShowToast } from "../utils/ToastUtils";
+import ButtonLoader from "../components/ButtonLoader";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
+  const [otpToken, setOtpToken] = useState(null);
+  const navigate = useNavigate();
+
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [editEmailButton, setEditEmailButton] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   const emailRef = useRef(null);
   const otpRef = useRef(null);
@@ -99,40 +106,109 @@ const ForgotPassword = () => {
   const handleEditEmail = () => {
     setOtpSent(false);
     setEditEmailButton(false);
-    setSuccessMessage("");
     emailRef.current.focus();
   };
 
-  const handleSendOtp = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
     if (validateEmail()) {
-      setEditEmailButton(true);
       // Make API call to send OTP here
-      console.log("Email:", email);
-      //if otp send successfully
-      setSuccessMessage("OTP sent to your email");
-      setOtpSent(true);
+      setShowLoader(true);
+      try {
+        const { data } = await axios.post(
+          "http://localhost:1111/user/send-otp",
+          { email }
+        );
+        if (data.success) {
+          ShowToast("Otp send successfully");
+          setOtpSent(true);
+          setOtpToken(data.token);
+          setEditEmailButton(true);
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            setErrors({ email: "email not found" });
+            emailRef.current.focus();
+          } else {
+            ShowToast(error.response.data.message, "error");
+          }
+        } else {
+          ShowToast(error.message, "error");
+        }
+      } finally {
+        setShowLoader(false);
+      }
     }
   };
 
-  const handleVerifyOtp = (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
     if (validateOtp()) {
       // Make API call to verify OTP here
-      console.log("OTP:", otp);
-      //if otp verified successfully
-      setSuccessMessage("OTP verified successfully");
-      setOtpVerified(true);
+      setShowLoader(true);
+      try {
+        const { data } = await axios.post(
+          "http://localhost:1111/user/verify-otp",
+          { enteredOtp: otp },
+          {
+            headers: {
+              Authorization: `Bearer ${otpToken}`,
+            },
+          }
+        );
+        if (data.success) {
+          ShowToast("OTP verified successfully");
+          setOtpVerified(true);
+          setOtpToken(data.token);
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 400) {
+            setErrors({ otp: "Invalid OTP" });
+            otpRef.current.focus();
+          } else if (error.response.data.message === "jwt expired") {
+            ShowToast("OTP Expired", "error");
+          } else {
+            ShowToast(error.response.data.message, "error");
+          }
+        } else {
+          ShowToast(error.message, "error");
+        }
+      } finally {
+        setShowLoader(false);
+      }
     }
   };
 
-  const handleForgetPassword = (e) => {
+  const handleForgetPassword = async (e) => {
     e.preventDefault();
     if (validatePassword()) {
       // Make API call to forget password
-      console.log("new password:", newPassword);
-      //if success then password change successfully
-      setSuccessMessage("password change successfully");
+      setShowLoader(true);
+      try {
+        const { data } = await axios.post(
+          "http://localhost:1111/user/forget-password",
+          { newPassword },
+          {
+            headers: {
+              Authorization: `Bearer ${otpToken}`,
+            },
+          }
+        );
+        if (data.success) {
+          ShowToast("Password Changed successfully");
+          navigate("/login");
+        }
+      } catch (error) {
+        if (error.response) {
+          ShowToast(error.response.data.message, "error");
+        } else {
+          ShowToast(error.message, "error");
+        }
+      } finally {
+        setShowLoader(false);
+      }
     }
   };
 
@@ -196,12 +272,33 @@ const ForgotPassword = () => {
               )}
 
               <div className="flex items-center justify-between">
-                <button
-                  type="submit"
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  {otpSent ? "Verify OTP" : "Send OTP"}
-                </button>
+                {otpSent ? (
+                  <div>
+                    {showLoader ? (
+                      <ButtonLoader text={"Verifying"} />
+                    ) : (
+                      <button
+                        type="submit"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Verify OTP
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    {showLoader ? (
+                      <ButtonLoader text={"Sending"} />
+                    ) : (
+                      <button
+                        type="submit"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Send OTP
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </form>
           ) : (
@@ -274,16 +371,19 @@ const ForgotPassword = () => {
                 </p>
               </div>
               <div className="flex items-center justify-between">
-                <button
-                  type="submit"
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Forget password
-                </button>
+                {showLoader ? (
+                  <ButtonLoader text={"changing password"}/>
+                ) : (
+                  <button
+                    type="submit"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Forget password
+                  </button>
+                )}
               </div>
             </form>
           )}
-          <p className="text-green-500 text-xs italic">{successMessage}</p>
           <p className="text-center text-gray-600 mt-4">
             Don't have an account?{" "}
             <Link to="/register" className="text-blue-500 hover:underline">

@@ -111,7 +111,6 @@ const Register = () => {
           ShowToast(data.message, "error");
         }
       } catch (error) {
-        console.log("Error:", error.message);
         ShowToast(error.response.data.message || "An error occurred.", "error");
       }
     }

@@ -4,6 +4,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { ShowToast } from "../utils/ToastUtils";
 import { contextData } from "../context/ContextApi";
+import ButtonLoader from "../components/ButtonLoader";
 
 const Login = () => {
   const { getCurrentUser } = useContext(contextData);
@@ -14,6 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
@@ -65,6 +67,7 @@ const Login = () => {
     e.preventDefault();
     if (validateForm()) {
       // Make API call here
+      setShowLoader(true);
       try {
         const { data } = await axios.post(
           "http://localhost:1111/user/login",
@@ -73,23 +76,25 @@ const Login = () => {
         if (data.success) {
           localStorage.setItem("authToken", data.token);
           ShowToast("Login successfully!");
-          getCurrentUser()
+          getCurrentUser();
           navigate("/");
-        } else {
-          ShowToast(data.message, "error");
         }
       } catch (error) {
-        console.log(error);
-        const errorMessage = error.response.data.message;
-        if (errorMessage === "User not found.") {
-          setEmailError("this is email is not registered");
-          emailRef.current.focus();
-        } else if (errorMessage === "Incorrect password.") {
-          setPasswordError(errorMessage);
-          passwordRef.current.focus();
-        } else {
-          ShowToast(errorMessage || "An error occurred.", "error");
+        if(error.response){
+          if (error.response.status == 404) {
+            setEmailError("Email not found");
+            emailRef.current.focus();
+          } else if (error.response.status == 401) {
+            setPasswordError("Incorrect password");
+            passwordRef.current.focus();
+          } else {
+            ShowToast(error.response.data.message, "error");
+          }
+        }else{
+          ShowToast(error.message, "error");
         }
+      } finally {
+        setShowLoader(false);
       }
     }
   };
@@ -152,12 +157,16 @@ const Login = () => {
               </Link>
             </div>
             <div className="flex items-center justify-between">
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Login
-              </button>
+              {showLoader ? (
+                <ButtonLoader text={"Logging"}/>
+              ) : (
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Login
+                </button>
+              )}
             </div>
           </form>
           <p className="text-center text-gray-600 mt-4">

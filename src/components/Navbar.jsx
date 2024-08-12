@@ -36,7 +36,7 @@ function Navbar() {
             {/* small screen  */}
             <div className="flex items-center gap-4 sm:gap-6 sm:hidden">
               {currentUser ? (
-                <Link to={"/profile"}>
+                <Link to={"/profile/userDetails"}>
                   <div
                     onMouseEnter={() => setShowDropDown(true)}
                     onMouseLeave={() => setShowDropDown(false)}
@@ -83,7 +83,7 @@ function Navbar() {
           {/* large screen  */}
           <div className="hidden sm:flex items-center gap-4 sm:gap-10">
             {currentUser ? (
-              <Link to={"/profile"}>
+              <Link to={"/profile/userDetails"}>
                 <div
                   onMouseEnter={() => setShowDropDown(true)}
                   onMouseLeave={() => setShowDropDown(false)}

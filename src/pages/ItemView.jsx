@@ -73,7 +73,7 @@ function ItemView() {
                 className="object-contain h-48 lg:h-96"
               />
             </div>
-            <div className="p-1 img-container flex items-center lg:flex-col lg:h-96 overflow-auto">
+            <div className="p-1 container flex items-center lg:flex-col lg:h-96 overflow-auto">
               {viewItem.imgUrls.map((img, index) => (
                 <img
                   src={img}

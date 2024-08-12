@@ -11,12 +11,12 @@
 }
 
 /* item-view css */
-.img-container::-webkit-scrollbar {
+.container::-webkit-scrollbar {
   display: none;
   scroll-behavior: smooth;
 }
 
-.img-container {
+.container {
   user-select: none;
 }
 
