@@ -2,12 +2,12 @@ import React, { useState, useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
-import { ShowToast } from "../utils/ToastUtils";
-import { contextData } from "../context/ContextApi";
-import ButtonLoader from "../components/ButtonLoader";
+import { ShowToast } from "../../utils/ToastUtils";
+import { contextData } from "../../context/ContextApi";
+import ButtonLoader from "../../components/loaders/ButtonLoader";
 
 const Login = () => {
-  const { getCurrentUser } = useContext(contextData);
+  const { initializeData } = useContext(contextData);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -76,7 +76,7 @@ const Login = () => {
         if (data.success) {
           localStorage.setItem("authToken", data.token);
           ShowToast("Login successfully!");
-          getCurrentUser();
+          initializeData();
           navigate("/");
         }
       } catch (error) {

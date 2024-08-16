@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
-import { ShowToast } from "../utils/ToastUtils";
+import { ShowToast } from "../../utils/ToastUtils";
 
 const Register = () => {
   const [formData, setFormData] = useState({

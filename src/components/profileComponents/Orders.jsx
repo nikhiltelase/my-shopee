@@ -1,43 +1,15 @@
-import React, { useContext, useState } from "react";
-import { contextData } from "../context/ContextApi";
+import React, { useContext } from "react";
+import { contextData } from "../../context/ContextApi";
 import { Link } from "react-router-dom";
-import Popup from "../components/Popup";
-import { ShowToast } from "../utils/ToastUtils";
 
-function Wishlist() {
-  const { cart, setCart } = useContext(contextData);
-  const [showPopup, setShowPopup] = useState(false);
-  const [removeItem, setRemoveItem] = useState(null);
-
-  const onClose = () => {
-    setShowPopup(false);
-  };
-
-  const onConfirm = () => {
-    // Remove item from cart
-    const updatedCart = cart.filter((item) => item !== removeItem);
-    setCart(updatedCart);
-    setShowPopup(false);
-    ShowToast(`Successfully removed ${removeItem.name}`);
-  };
-
-  const removeFromCart = (item) => {
-    setShowPopup(true);
-    setRemoveItem(item);
-  };
+function Orders() {
+  const { cart } = useContext(contextData);
 
   return (
     <>
-      {showPopup && (
-        <Popup
-          message="Are you sure to remove!"
-          onClose={onClose}
-          onConfirm={onConfirm}
-        />
-      )}
       <div className=" bg-white rounded-lg shadow-lg mx-auto pt-1 sm:pt-2 sm:mt-7 lg:pt-2 px-4 lg:px-6 sm:h-[580px] overflow-scroll container">
         <h1 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-4 lg:mb-2 lg:text-center">
-          Wishlist
+          Orders
         </h1>
         <div className="w-full flex flex-col lg:flex-row">
           <div className="w-full ">
@@ -73,11 +45,10 @@ function Wishlist() {
                   <div className="flex flex-col items-end mt-4 md:mt-0">
                     <Link to={"/orders-details/order-Id"}>
                       <button
-                        onClick={() => removeFromCart(item)}
                         className="hover:text-blue-500 text-black text-sm sm:text-base font-bold py-2 px-4 rounded mb-2 transition-colors duration-300"
                         aria-label="Remove item"
                       >
-                        Remove
+                        Status
                       </button>
                     </Link>
                   </div>
@@ -85,10 +56,10 @@ function Wishlist() {
               ))
             ) : (
               <p className="text-gray-600 py-32 w-full text-xl sm:text-2xl mt-2 sm:mt-0 text-center">
-                You do not have wishlist{" "}
+                You have no orders
                 <Link
                   to="/"
-                  className="text-blue-600 underline hover:text-blue-700 transition-all duration-300"
+                  className="text-blue-600 underline m-2 hover:text-blue-700 transition-all duration-300"
                 >
                   Shop now
                 </Link>
@@ -101,4 +72,4 @@ function Wishlist() {
   );
 }
 
-export default Wishlist;
+export default Orders;

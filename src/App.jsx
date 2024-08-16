@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RoutesConfig from "./utils/RoutesConfig";
-import Loader from "./components/Loader";
+import Loader from "./components/loaders/Loader"
 import Navbar from "./components/Navbar";
-import { ToastContainer, Slide } from "react-toastify"; // Ensure Slide is imported correctly
+import { ToastContainer } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
 
 const routes = RoutesConfig();

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { contextData } from "../context/ContextApi";
+import { contextData } from "../../context/ContextApi";
 import { Link } from "react-router-dom";
 
 function Notifications() {

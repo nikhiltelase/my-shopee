@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { useParams, Link } from "react-router-dom";
-import UserDetails from "../components/UserDetails";
-import Orders from "../components/Orders";
+import UserDetails from "../components/profileComponents/UserDetails";
+import Orders from "../components/profileComponents/Orders";
 import { contextData } from "../context/ContextApi";
-import Wishlist from "../components/Wishlist";
-import Notifications from "../components/Notifications";
-import Contact from "../components/Contact";
+import Wishlist from "../components/profileComponents/Wishlist";
+import Notifications from "../components/profileComponents/Notifications";
+import Contact from "../components/profileComponents/Contact";
 import {
   FaUser,
   FaClipboardList,

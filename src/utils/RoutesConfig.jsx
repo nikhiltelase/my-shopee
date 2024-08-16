@@ -2,15 +2,16 @@ import React, { lazy } from "react";
 import Profile from "../pages/Profile";
 import OrderDetails from "../pages/OrderDetails";
 
+
 const Home = lazy(() => import("../pages/Home"));
 const CartList = lazy(() => import("../pages/CartList"));
 const Category = lazy(() => import("../pages/Category"));
 const ItemView = lazy(() => import("../pages/ItemView"));
 const Checkout = lazy(() => import("../pages/Checkout"));
 const OrderSuccess = lazy(() => import("../pages/OrderSuccess"));
-const Login = lazy(() => import("../pages/Login"));
-const Register = lazy(() => import("../pages/Register"));
-const ForgetPass = lazy(() => import("../pages/ForgetPass"));
+const Login = lazy(() => import("../pages/authonticateUser/Login"));
+const Register = lazy(() => import("../pages/authonticateUser/Register"));
+const ForgetPass = lazy(() => import("../pages/authonticateUser/ForgetPass"));
 
 function RoutesConfig() {
   const routes = [

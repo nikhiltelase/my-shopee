@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
-import { ShowToast } from "../utils/ToastUtils";
-import ButtonLoader from "../components/ButtonLoader";
+import { ShowToast } from "../../utils/ToastUtils";
+import ButtonLoader from "../../components/loaders/ButtonLoader";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

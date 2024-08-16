@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { contextData } from "../context/ContextApi";
-import { ShowToast } from "../utils/ToastUtils";
+import { contextData } from "../../context/ContextApi";
+import { ShowToast } from "../../utils/ToastUtils";
 import { FaUserCircle, FaEdit } from "react-icons/fa";
 
 function UserDetails() {
@@ -121,9 +121,8 @@ function UserDetails() {
         <>
           <div>
             <div
-              className={`mb-6 sm:mb-10 border p-3 sm:p-4 rounded-lg ${
-                isEditing ? "bg-white" : "bg-slate-50"
-              }`}
+              className={`mb-6 sm:mb-10 border p-3 sm:p-4 rounded-lg ${isEditing ? "bg-white" : "bg-slate-50"
+                }`}
             >
               <span className="block text-gray-700 text-sm font-semibold">
                 Name:
@@ -132,9 +131,8 @@ function UserDetails() {
             </div>
 
             <div
-              className={`mb-6 sm:mb-10 border p-3 sm:p-4 rounded-lg ${
-                isEditing ? "bg-white" : "bg-slate-50"
-              }`}
+              className={`mb-6 sm:mb-10 border p-3 sm:p-4 rounded-lg ${isEditing ? "bg-white" : "bg-slate-50"
+                }`}
             >
               <span className="block text-gray-700 text-sm font-semibold">
                 Email:
@@ -143,9 +141,8 @@ function UserDetails() {
             </div>
 
             <div
-              className={`mb-6 sm:mb-10 border p-3 sm:p-4 rounded-lg ${
-                isEditing ? "bg-white" : "bg-slate-50"
-              }`}
+              className={`mb-6 sm:mb-10 border p-3 sm:p-4 rounded-lg ${isEditing ? "bg-white" : "bg-slate-50"
+                }`}
             >
               <span className="block text-gray-700 text-sm font-semibold">
                 Phone:
