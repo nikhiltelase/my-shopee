@@ -37,7 +37,7 @@ function Contact() {
           placeholder="What is your query?"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="container sm:w-3/4 px-2 pt-2 sm:py-1 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className=" sm:w-3/4 px-2 pt-2 sm:py-1 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <button
           onClick={handleSendMessage}

@@ -7,7 +7,7 @@ function Notifications() {
 
   return (
     <>
-      <div className=" bg-white rounded-lg shadow-lg mx-auto pt-1 sm:pt-2 sm:mt-7 lg:pt-2 px-4 lg:px-6 sm:h-[580px] overflow-scroll container">
+      <div className=" bg-white rounded-lg shadow-lg mx-auto pt-1 sm:pt-2 sm:mt-7 lg:pt-2 px-4 lg:px-6 sm:h-[580px] overflow-scroll img-container">
         <h1 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-4 lg:mb-2 lg:text-center">
         Notifications
         </h1>

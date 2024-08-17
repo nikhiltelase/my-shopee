@@ -71,7 +71,7 @@ function Navbar() {
           <div
             className={`w-full fixed  ${
               scrollY > 60 ? "top-0  z-50" : "top-16"
-            } sm:static bg-white sm:bg-transparent sm:w-auto xl:w-3/4`}
+            } sm:static bg-white sm:bg-transparent transition-all duration-300 ease-in-out sm:w-auto xl:w-3/4`}
           >
             <div className="shadow-lg m-2  rounded-lg  sm:shadow-none sm:m-0">
               <Search />
