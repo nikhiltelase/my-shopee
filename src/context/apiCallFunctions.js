@@ -45,7 +45,7 @@ export const fetchCurrentUser = async (setCurrentUser, setCart) => {
   }
 };
 
-export const updateUserCart = async (updatedCart, setCart, message) => {
+export const updateUser = async (updatedDetails) => {
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -53,9 +53,9 @@ export const updateUserCart = async (updatedCart, setCart, message) => {
       return;
     }
 
-    const response = await axios.put(
+    const { data } = await axios.put(
       "http://localhost:1111/user/update",
-      { cart: updatedCart },
+      updatedDetails,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -63,20 +63,15 @@ export const updateUserCart = async (updatedCart, setCart, message) => {
       }
     );
 
-    const { data } = response;
     if (data.success) {
-      setCart(updatedCart);
-      ShowToast(
-        `${
-          message ? message : "Cart updated successfully"
-        }`,
-        "success"
-      );
-    } else {
-      ShowToast(data.message, "error");
+      return true;
     }
   } catch (error) {
-    console.error("Error updating cart:", error);
-    ShowToast("An error occurred while updating your cart.", "error");
+    console.log;
+    if (error.response) {
+      ShowToast(error.response.data.message, "error");
+    } else {
+      ShowToast(error.message, "error");
+    }
   }
 };

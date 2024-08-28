@@ -3,7 +3,8 @@ import { TiPlus, TiMinus } from "react-icons/ti";
 import { contextData } from "../context/ContextApi";
 import { Link } from "react-router-dom";
 import Popup from "../components/Popup";
-import { updateUserCart } from "../context/apiCallFunctions";
+import { updateUser } from "../context/apiCallFunctions";
+import { ShowToast } from "../utils/ToastUtils";
 
 function CartList() {
   const { cart, setCart, currentUser } = useContext(contextData);
@@ -14,10 +15,14 @@ function CartList() {
     setShowPopup(false);
   };
 
-  const handleConfirmRemove = () => {
+  const handleConfirmRemove = async () => {
     const updatedCart = cart.filter((item) => item._id !== itemToRemove._id);
-    updateUserCart(updatedCart, setCart, `${itemToRemove.name} removed`);
-    setShowPopup(false);
+    const updateStatus = await updateUser({ cart: updatedCart });
+    if (updateStatus) {
+      ShowToast(`${itemToRemove.name} removed`);
+      setShowPopup(false);
+      setCart(updatedCart);
+    }
   };
 
   const handleRemoveFromCart = (item) => {
@@ -25,15 +30,22 @@ function CartList() {
     setItemToRemove(item);
   };
 
-  const handleUpdateQuantity = (itemIndex, quantity) => {
+  const handleUpdateQuantity = async (itemIndex, quantity) => {
     const updatedCart = cart.map((cartItem, index) =>
-      index === itemIndex ? { ...cartItem, quantity: Math.max(1, quantity) } : cartItem
+      index === itemIndex
+        ? { ...cartItem, quantity: Math.max(1, quantity) }
+        : cartItem
     );
-    updateUserCart(updatedCart, setCart);
+    const updateStatus = await updateUser({ cart: updatedCart });
+    if (updateStatus) {
+      setCart(updatedCart);
+    }
   };
 
   const calculateTotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+    return cart
+      .reduce((total, item) => total + item.price * item.quantity, 0)
+      .toFixed(2);
   };
 
   return (
@@ -79,7 +91,9 @@ function CartList() {
                       </Link>
                       <div className="flex items-center mt-2">
                         <button
-                          onClick={() => handleUpdateQuantity(index, item.quantity - 1)}
+                          onClick={() =>
+                            handleUpdateQuantity(index, item.quantity - 1)
+                          }
                           className="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center transition-colors duration-300"
                           aria-label="Decrease quantity"
                         >
@@ -89,7 +103,9 @@ function CartList() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => handleUpdateQuantity(index, item.quantity + 1)}
+                          onClick={() =>
+                            handleUpdateQuantity(index, item.quantity + 1)
+                          }
                           className="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center transition-colors duration-300"
                           aria-label="Increase quantity"
                         >
@@ -128,24 +144,37 @@ function CartList() {
                 Price Details
               </h2>
               <div className="flex justify-between mb-4">
-                <span className="text-base sm:text-lg">Price ({cart.length} items)</span>
-                <span className="text-base sm:text-lg">₹{calculateTotal()}</span>
+                <span className="text-base sm:text-lg">
+                  Price ({cart.length} items)
+                </span>
+                <span className="text-base sm:text-lg">
+                  ₹{calculateTotal()}
+                </span>
               </div>
               <div className="flex justify-between mb-4">
                 <span className="text-base sm:text-lg">Discount</span>
-                <span className="text-base sm:text-lg text-green-500">- ₹0</span>
+                <span className="text-base sm:text-lg text-green-500">
+                  - ₹0
+                </span>
               </div>
               <div className="flex justify-between mb-4">
                 <span className="text-base sm:text-lg">Delivery Charges</span>
-                <span className="text-base sm:text-lg text-green-500">Free</span>
+                <span className="text-base sm:text-lg text-green-500">
+                  Free
+                </span>
               </div>
               <div className="flex justify-between mb-4">
-                <span className="text-lg sm:text-xl font-bold">Total Amount</span>
+                <span className="text-lg sm:text-xl font-bold">
+                  Total Amount
+                </span>
                 <span className="text-lg sm:text-xl font-bold">
                   ₹{calculateTotal()}
                 </span>
               </div>
-              <Link to={`${!currentUser ? "/login" : "/checkout"}`} className="invisible lg:visible">
+              <Link
+                to={`${!currentUser ? "/login" : "/checkout"}`}
+                className="invisible lg:visible"
+              >
                 <button className="bg-orange-500 hover:bg-orange-700 text-white text-lg sm:text-xl font-bold py-3 w-full rounded-lg transition-colors duration-300">
                   Place Order
                 </button>
@@ -161,8 +190,12 @@ function CartList() {
         <div className="fixed left-0 bottom-0 w-full z-10 bg-white py-3 px-4 lg:hidden shadow-md">
           <div className="flex justify-between items-center">
             <div className="flex flex-col">
-              <span className="text-base sm:text-lg font-bold">Total Amount</span>
-              <span className="text-lg sm:text-xl font-bold">₹{calculateTotal()}</span>
+              <span className="text-base sm:text-lg font-bold">
+                Total Amount
+              </span>
+              <span className="text-lg sm:text-xl font-bold">
+                ₹{calculateTotal()}
+              </span>
             </div>
             <Link to="/checkout">
               <button className="bg-orange-500 hover:bg-orange-700 text-white text-lg sm:text-xl font-bold py-3 px-4 rounded-lg transition-colors duration-300">

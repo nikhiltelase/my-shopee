@@ -1,5 +1,9 @@
 import React, { createContext, useEffect, useState } from "react";
-import { fetchItemData, fetchCurrentUser, updateUserCart } from "./apiCallFunctions";
+import {
+  fetchItemData,
+  fetchCurrentUser,
+  updateUser,
+} from "./apiCallFunctions";
 import { ShowToast } from "../utils/ToastUtils";
 
 export const contextData = createContext(null);
@@ -18,19 +22,24 @@ const ContextApi = ({ children }) => {
     initializeData();
   }, []);
 
-  const addToCart = (item) => {
+  const addToCart = async (item) => {
     if (currentUser) {
       const existingItem = cart.find((cartItem) => cartItem._id === item._id);
       if (!existingItem) {
         const updatedCart = [...cart, { ...item, quantity: 1 }];
-        updateUserCart(updatedCart, setCart, `${item.name} added successfully`);
+        const updateStatus = await updateUser({ cart: updatedCart });
+        if (updateStatus) {
+          setCart(updatedCart);
+          ShowToast(`${item.name} added`);
+        }
       }
     } else {
       ShowToast("Please log in to add items to your cart", "warning");
     }
   };
 
-  const isItemInCart = (itemId) => cart.some((cartItem) => cartItem._id === itemId);
+  const isItemInCart = (itemId) =>
+    cart.some((cartItem) => cartItem._id === itemId);
 
   const logout = () => {
     localStorage.removeItem("authToken");
@@ -51,9 +60,7 @@ const ContextApi = ({ children }) => {
   };
 
   return (
-    <contextData.Provider value={contextValue}>
-      {children}
-    </contextData.Provider>
+    <contextData.Provider value={contextValue}>{children}</contextData.Provider>
   );
 };
 
