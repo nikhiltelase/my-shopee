@@ -3,9 +3,10 @@ import axios from "axios";
 import { contextData } from "../../context/ContextApi";
 import { ShowToast } from "../../utils/ToastUtils";
 import { FaUserCircle, FaEdit } from "react-icons/fa";
+import { updateUser } from "../../context/apiCallFunctions";
 
 function UserDetails() {
-  const { currentUser, setCurrentUser } = useContext(contextData);
+  const { currentUser, initializeData } = useContext(contextData);
   const [isEditing, setIsEditing] = useState(false);
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -21,7 +22,7 @@ function UserDetails() {
         mobile: currentUser.mobile,
       });
     }
-  }, [currentUser, setCurrentUser]);
+  }, [currentUser]);
 
   const handleChange = (e) => {
     setUserDetails({
@@ -31,28 +32,12 @@ function UserDetails() {
   };
 
   const handleUpdate = async () => {
-    try {
-      const token = localStorage.getItem("authToken");
-      const { data } = await axios.put(
-        "http://localhost:1111/user/update",
-        userDetails,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (data.success) {
-        ShowToast("User details updated successfully!");
+      const updateStatus = await updateUser(userDetails)
+      if (updateStatus) {
+        initializeData()
         setIsEditing(false);
-        setCurrentUser(data.user);
-      } else {
-        ShowToast(data.message, "error");
-      }
-    } catch (error) {
-      console.log("Error:", error.message);
-      ShowToast(error.response.data.message || "An error occurred.", "error");
-    }
+        ShowToast("User details updated successfully!");
+      } 
   };
 
   return (
