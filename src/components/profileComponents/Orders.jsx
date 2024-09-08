@@ -3,7 +3,7 @@ import { contextData } from "../../context/ContextApi";
 import { Link } from "react-router-dom";
 
 function Orders() {
-  const { cart } = useContext(contextData);
+  const { orders, setOrders } = useContext(contextData);
 
   return (
     <>
@@ -13,20 +13,20 @@ function Orders() {
         </h1>
         <div className="w-full flex flex-col lg:flex-row">
           <div className="w-full ">
-            {cart.length > 0 ? (
-              cart.map((item, index) => (
+            {orders.length > 0 ? (
+              orders.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-1 sm:p-2 lg:p-4 mb-4 bg-white shadow-lg rounded"
+                  className="flex items-center justify-between p-1 sm:p-2 lg:p-4 mb-4 bg-white shadow-lg rounded hover:shadow-2xl hover:bg-blue-50 transition-all duration-300 transform "
                 >
                   <div className="flex">
                     <img
-                      className="w-20 h-20 sm:w-32 sm:h-32 object-contain"
+                      className="w-20 h-20 sm:w-32 sm:h-32 object-contain transition-transform duration-300"
                       src={item.imgUrls[0]}
                       alt={item.name}
                     />
                     <div className="flex flex-col justify-center ml-2 sm:ml-4">
-                      <Link to={`/item/${item._id}`}>
+                      <Link to={`/order-details/${item._id}`}>
                         <h2 className="font-bold text-sm sm:text-lg lg:text-xl mb-2 text-gray-800 hover:text-blue-700 transition-all duration-300">
                           {item.name}
                         </h2>
@@ -43,9 +43,9 @@ function Orders() {
                     </div>
                   </div>
                   <div className="flex flex-col items-end mt-4 md:mt-0">
-                    <Link to={"/orders-details/order-Id"}>
+                    <Link to={`/order-details/${item._id}`}>
                       <button
-                        className="hover:text-blue-500 text-black text-sm sm:text-base font-bold py-2 px-4 rounded mb-2 transition-colors duration-300"
+                        className="hover:text-blue-500 text-black text-sm sm:text-base font-bold py-2 px-4 rounded mb-2 transition-colors duration-300 hover:bg-blue-100"
                         aria-label="Remove item"
                       >
                         Status

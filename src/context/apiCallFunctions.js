@@ -17,7 +17,7 @@ export const fetchItemData = async (setItems) => {
   }
 };
 
-export const fetchCurrentUser = async (setCurrentUser, setCart) => {
+export const updateCurrentUser = async (setCurrentUser, setCart, setWishList,setOrders) => {
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -35,6 +35,8 @@ export const fetchCurrentUser = async (setCurrentUser, setCart) => {
     if (data.success) {
       setCurrentUser(data.user);
       setCart(data.user.cart || []);
+      setWishList(data.user.wishlist || [])
+      setOrders(data.user.orders)
     } else {
       ShowToast("Failed to fetch user data", "error");
     }
@@ -67,6 +69,7 @@ export const updateUser = async (updatedDetails) => {
       return true;
     }
   } catch (error) {
+    console.log(error)
     console.log;
     if (error.response) {
       ShowToast(error.response.data.message, "error");

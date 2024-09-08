@@ -1,11 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { contextData } from "../context/ContextApi";
 import { useNavigate } from "react-router-dom";
 import Popup from "../components/Popup";
+import { updateUser } from "../context/apiCallFunctions";
+import { ShowToast } from "../utils/ToastUtils";
 
 function Checkout() {
-  const { cart, setCart } = useContext(contextData);
+  const { cart, setCart, orders, setOrders, currentUser } =
+    useContext(contextData);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/");
+      ShowToast("please login to access", "warning");
+    } 
+  }, []);
+
   const [showPopup, setShowPopup] = useState(false);
   const [conformAddress, setConformAddress] = useState(false);
   const [address, setAddress] = useState({
@@ -42,18 +53,27 @@ function Checkout() {
     return total;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setShowPopup(true);
     if (conformAddress) {
-      navigate("/order-success", {
-        state: {
-          orderDetails: cart,
-          address,
-          totalAmount: calculateTotal(),
-        },
+      const updatedOrders = [...orders, ...cart];
+      const updateStatus = await updateUser({
+        orders: updatedOrders,
+        cart: [],
       });
-      setCart([]);
+      if (updateStatus) {
+        ShowToast("ordered successfully");
+        setOrders(updatedOrders);
+        setCart([]);
+        navigate("/order-success", {
+          state: {
+            orderDetails: cart,
+            address,
+            totalAmount: calculateTotal(),
+          },
+        });
+      }
     }
   };
 

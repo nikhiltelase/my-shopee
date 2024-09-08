@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { useLocation, useNavigate,Link } from "react-router-dom";
 import { ShowToast } from "../utils/ToastUtils";
+import { contextData } from "../context/ContextApi";
 
 function OrderSuccess() {
   const { state } = useLocation();
+  const {currentUser} = useContext(contextData)
   const { orderDetails, address, totalAmount } = state;
+  const navigate = useNavigate()
 
   // Generate a random order ID
   const generateOrderId = () => {
@@ -14,7 +17,10 @@ function OrderSuccess() {
   const orderId = generateOrderId();
 
   useEffect(() => {
-    ShowToast("Order Placed Successfully!");
+    if(!currentUser){
+      ShowToast("please login to order any items!", "waring")
+      navigate("/");
+    }
   }, []);
 
   return (
@@ -25,9 +31,10 @@ function OrderSuccess() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-6 text-green-600">
             Order Placed Successfully🎉
           </h1>
-          <h2 className="text-xl lg:text-2xl font-semibold mb-8 text-gray-700">
+          <h2 className="text-xl lg:text-2xl font-semibold  text-gray-700">
             Order ID: {orderId}
           </h2>
+          <Link to={"/profile/orders"}><h2 className="text-blue-600 sm:text-lg mb-8 cursor-pointer">See orders</h2></Link>
           <div className="mb-8">
             <h3 className="text-lg lg:text-xl font-semibold mb-4 text-gray-700">
               Order Details

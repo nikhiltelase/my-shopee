@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { contextData } from "../context/ContextApi";
 import RelatedItems from "../components/RelatedItems";
+import { updateUser } from "../context/apiCallFunctions";
+import { ShowToast } from "../utils/ToastUtils";
 
 const Specifications = (specification) => {
   const pairs = specification.split(", ");
@@ -23,13 +25,13 @@ const Specifications = (specification) => {
 
 function ItemView() {
   const navigate = useNavigate();
-  const { items, addToCart, isItemInCart } = useContext(contextData);
+  const { items, addToCart, isItemInCart, wishList, setWishList, currentUser } =
+    useContext(contextData);
   const { itemId } = useParams();
 
   const viewItem = items.find((item) => item._id == itemId);
   const [mainImg, setMainImg] = useState("");
   const [imgBorderIndex, setImgBorderIndex] = useState(0);
-  const [isItemFavorite, setIsItemFavorite] = useState(false);
 
   const addButtonFunction = (item) => {
     addToCart(item);
@@ -54,14 +56,43 @@ function ItemView() {
   const isAddedToCart = isItemInCart(viewItem._id);
   const specifications = Specifications(viewItem.specification);
 
-  function buyNow(item) {
+  const buyNow = (item) => {
     addToCart(item);
     navigate("/checkout");
-  }
-  function setImage(index, img) {
+  };
+  const setImage = (index, img) => {
     setMainImg(img);
     setImgBorderIndex(index);
-  }
+  };
+
+  const updateWishList = async (item) => {
+    if (currentUser) {
+      const existingItem = wishList.find(
+        (ListItem) => ListItem._id == item._id
+      );
+      if (existingItem) {
+        const updatedWishList = wishList.filter(
+          (ListItem) => ListItem._id !== item._id
+        );
+        const updateStatus = await updateUser({ wishlist: updatedWishList });
+        if (updateStatus) {
+          setWishList(updatedWishList);
+          ShowToast(`${item.name} removed`);
+        }
+      } else {
+        const updatedWishList = [...wishList, { ...item }];
+
+        const updateStatus = await updateUser({ wishlist: updatedWishList });
+        if (updateStatus) {
+          setWishList(updatedWishList);
+          ShowToast(`${item.name} added to wishlist`);
+        }
+      }
+    }
+  };
+  const isItemInWishList = (itemId) =>
+    wishList.some((item) => item._id === itemId);
+
 
   return (
     <>
@@ -96,15 +127,15 @@ function ItemView() {
                   {viewItem.name}
                 </h1>
                 <button
-                  onClick={() => setIsItemFavorite(!isItemFavorite)}
+                  onClick={() => updateWishList(viewItem)}
                   className="text-red-500 text-2xl sm:text-3xl hover:text-red-600 select-none outline-none"
                   title={
-                    isItemFavorite
+                    isItemInWishList(viewItem._id)
                       ? "Remove from Favorites"
                       : "Add to Favorites"
                   }
                 >
-                  {isItemFavorite ? <FaHeart /> : <FaRegHeart />}
+                  {isItemInWishList(viewItem._id) ? <FaHeart /> : <FaRegHeart />}
                 </button>
               </div>
 

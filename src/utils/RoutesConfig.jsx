@@ -55,7 +55,7 @@ function RoutesConfig() {
       element: <Profile />,
     },
     {
-      route: "/order-details",
+      route: "/order-details/:orderId",
       element: <OrderDetails/>,
     },
   ];

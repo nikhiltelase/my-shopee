@@ -1,6 +1,38 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { contextData } from "../context/ContextApi";
+import { ShowToast } from "../utils/ToastUtils";
 
 const OrderDetails = () => {
+  const { orders } = useContext(contextData);
+  const { orderId } = useParams();
+  const order = orders.find((item) => item._id == orderId)
+
+  if (!order) {
+    return <div className="text-center mt-10">order not found</div>;
+  }
+
+  const today = new Date();
+  // Get the day
+  const day = today.getDate();
+
+  // Get the month name
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const month = monthNames[today.getMonth()];
+  const year = today.getFullYear().toString().slice(-2);
   return (
     <div className="max-w-screen-lg mx-auto p-4 sm:p-6 lg:p-8 bg-gray-100 mt-12">
       {/* Order Status Section */}
@@ -10,13 +42,15 @@ const OrderDetails = () => {
         </h2>
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h3 className="text-lg sm:text-xl font-semibold">OnePlus Buds</h3>
+            <h3 className="text-lg sm:text-xl font-semibold">{order.name}</h3>
             <p className="text-gray-600">White</p>
             <p className="text-gray-600">Seller: SuperCom</p>
-            <p className="text-lg sm:text-xl font-semibold mt-2">₹4,499</p>
+            <p className="text-lg sm:text-xl font-semibold mt-2">
+              ₹{order.price}
+            </p>
           </div>
           <img
-            src="https://rukminim2.flixcart.com/image/612/612/xif0q/smartwatch/g/t/t/42-t500-pro-max-69-android-ios-gamesir-yes-original-imahf3c2twrcgdyx.jpeg?q=70"
+            src={order.imgUrls[0]}
             alt="Product Image"
             className="w-20 sm:w-32  lg:w-40  object-cover rounded"
           />
@@ -39,26 +73,32 @@ const OrderDetails = () => {
             <div className="flex items-center ">
               <div>
                 <p className="font-medium">Ordered</p>
-                <p className="text-gray-600 text-sm">Thu, 6th Aug '20</p>
+                <p className="text-gray-600 text-sm">
+                  Thu, {day}th {month} {year}
+                </p>
               </div>
             </div>
             <div className="flex items-center ">
               <div>
                 <p className="font-medium">Packed</p>
-                <p className="text-gray-600 text-sm">Mon, 10th Aug '20</p>
+                <p className="text-gray-600 text-sm">
+                  Mon, {day + 1}th {month} {year}
+                </p>
               </div>
             </div>
             <div className="flex items-center ">
               <div>
                 <p className="font-medium">Shipped</p>
-                <p className="text-gray-600 text-sm">Mon, 11th Aug '20</p>
+                <p className="text-gray-600 text-sm">
+                  Mon, {day + 1}th {month} {year}
+                </p>
               </div>
             </div>
             <div className="flex items-center ">
               <div>
                 <p className="font-medium">Delivery</p>
                 <p className="text-gray-600 text-sm">
-                  Expected by Fri, 14th Aug '20
+                  Expected by {day + 2}th {month} {year}
                 </p>
               </div>
             </div>

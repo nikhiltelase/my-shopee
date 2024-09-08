@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, {useState, useContext, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import UserDetails from "../components/profileComponents/UserDetails";
 import Orders from "../components/profileComponents/Orders";
 import { contextData } from "../context/ContextApi";
@@ -14,10 +14,22 @@ import {
   FaAddressBook,
   FaSignOutAlt,
 } from "react-icons/fa";
+import Popup from "../components/Popup";
 
 function Profile() {
-  const { logout } = useContext(contextData);
+  const [showPopup, setShowPopup] = useState(false);
+  const { logout,  } = useContext(contextData);
   const { option } = useParams();
+  const navigate = useNavigate()
+  const PopupNo = () => {
+    setShowPopup(false);
+  };
+
+  const PopupYes = async () => {
+    setShowPopup(false);
+    logout();
+    navigate("/")
+  };
 
   const renderComponent = () => {
     switch (option) {
@@ -38,6 +50,13 @@ function Profile() {
 
   return (
     <div className="bg-slate-100 h-screen ">
+       {showPopup && (
+        <Popup
+          message="Are you sure to logout?"
+          onClose={PopupNo}
+          onConfirm={PopupYes}
+        />
+      )}
       <div className="flex flex-col sm:flex-row h-auto sm:h-[610px] mt-16 px-4 sm:px-32 ">
         {/*left side */}
         <div className="w-full sm:w-1/4 px-4 py-2 bg-white rounded-lg shadow-lg sm:mt-7 mb-6 sm:mb-0">
@@ -99,14 +118,13 @@ function Profile() {
               </Link>
             </li>
             <li>
-              <Link
-                to="/"
-                onClick={() => logout()}
-                className="flex items-center gap-2 text-sm lg:text-lg font-medium text-gray-700 hover:text-red-500"
+              <p
+                onClick={() => setShowPopup(true)}
+                className="flex cursor-pointer items-center gap-2 text-sm lg:text-lg font-medium text-gray-700 hover:text-red-500"
               >
                 <FaSignOutAlt className="text-blue-600 text-xl lg:text-2xl" />
                 Logout
-              </Link>
+              </p>
             </li>
           </ul>
         </div>
