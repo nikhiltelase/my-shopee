@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { contextData } from "../context/ContextApi";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
+import Loader from "./loaders/Loader"
+import ButtonLoader from "./loaders/ButtonLoader"
 
 function ItemList({ items }) {
   const navigate = useNavigate();
@@ -106,7 +108,7 @@ function ItemList({ items }) {
           ))}
         </div>
         {items.length === 0 && (
-          <h1 className="text-lg text-red-500 mt-6">Not found</h1>
+          <ButtonLoader text={"loading..."}/>
         )}
       </div>
       {showGoToTop && (

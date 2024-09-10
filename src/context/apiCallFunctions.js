@@ -3,7 +3,7 @@ import { ShowToast } from "../utils/ToastUtils";
 
 export const fetchItemData = async (setItems) => {
   try {
-    const response = await axios.get("http://localhost:1111/item/all-items");
+    const response = await axios.get("https://my-shope-backend.onrender.com/item/all-items");
     const { data } = response;
 
     if (data.success) {
@@ -25,7 +25,7 @@ export const updateCurrentUser = async (setCurrentUser, setCart, setWishList,set
       return;
     }
 
-    const response = await axios.get("http://localhost:1111/user/currentUser", {
+    const response = await axios.get("https://my-shope-backend.onrender.com/user/currentUser", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -56,7 +56,7 @@ export const updateUser = async (updatedDetails) => {
     }
 
     const { data } = await axios.put(
-      "http://localhost:1111/user/update",
+      "https://my-shope-backend.onrender.com/user/update",
       updatedDetails,
       {
         headers: {

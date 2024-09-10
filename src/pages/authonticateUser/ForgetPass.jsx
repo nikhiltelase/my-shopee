@@ -116,7 +116,7 @@ const ForgotPassword = () => {
       setShowLoader(true);
       try {
         const { data } = await axios.post(
-          "http://localhost:1111/user/send-otp",
+          "https://my-shope-backend.onrender.com/user/send-otp",
           { email }
         );
         if (data.success) {
@@ -149,7 +149,7 @@ const ForgotPassword = () => {
       setShowLoader(true);
       try {
         const { data } = await axios.post(
-          "http://localhost:1111/user/verify-otp",
+          "https://my-shope-backend.onrender.com/user/verify-otp",
           { enteredOtp: otp },
           {
             headers: {
@@ -188,7 +188,7 @@ const ForgotPassword = () => {
       setShowLoader(true);
       try {
         const { data } = await axios.post(
-          "http://localhost:1111/user/forget-password",
+          "https://my-shope-backend.onrender.com/user/forget-password",
           { newPassword },
           {
             headers: {

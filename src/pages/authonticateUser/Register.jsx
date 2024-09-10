@@ -101,7 +101,7 @@ const Register = () => {
       //making api call
       try {
         const { data } = await axios.post(
-          "http://localhost:1111/user/register",
+          "https://my-shope-backend.onrender.com/user/register",
           formData
         );
         if (data.success) {
