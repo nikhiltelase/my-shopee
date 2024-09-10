@@ -88,6 +88,8 @@ function ItemView() {
           ShowToast(`${item.name} added to wishlist`);
         }
       }
+    } else {
+      ShowToast("Please log in to add items to your cart", "warning");
     }
   };
   const isItemInWishList = (itemId) =>
