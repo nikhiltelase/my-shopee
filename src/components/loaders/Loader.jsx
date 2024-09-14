@@ -1,22 +1,15 @@
 import React from "react";
-import { Watch } from "react-loader-spinner";
 
-function Loader() {
+export default function Loader({ color, width, height }) {
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center">
-      <Watch
-        visible={true}
-        height="80"
-        width="80"
-        radius="48"
-        color="rgb(59 130 246)"
-        ariaLabel="watch-loading"
-        wrapperStyle={{}}
-        wrapperClass=""
-      />
-      <h1 className="text-blue-500 text-xl mt-2">Loading...</h1>
+    <div className="flex items-center gap-3 justify-center">
+      <span
+        className={`w-${width ? width : "5"} h-${
+          height ? height : "5"
+        } border-4 border-t-transparent border-${
+          color ? color : "blue"
+        }-500 rounded-full animate-spin `}
+      ></span>
     </div>
   );
 }
-
-export default Loader;

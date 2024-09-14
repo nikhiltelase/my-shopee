@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useLocation, useNavigate,Link } from "react-router-dom";
 import { ShowToast } from "../utils/ToastUtils";
 import { contextData } from "../context/ContextApi";
+import Navbar from "../components/Navbar";
 
 function OrderSuccess() {
   const { state } = useLocation();
@@ -25,16 +26,16 @@ function OrderSuccess() {
 
   return (
     <>
-    
-      <div className="container mx-auto px-4 lg:px-0 py-12 lg:py-16">
-        <div className="bg-white p-8 lg:p-12 shadow-lg rounded-lg max-w-4xl mx-auto">
-          <h1 className="text-3xl lg:text-4xl font-bold mb-6 text-green-600">
+    <Navbar/>
+      <div className="container mx-auto px-4 lg:px-0 py-2 sm:mt-2 lg:py-16">
+        <div className="bg-white p-4 lg:p-8 shadow-lg rounded-lg max-w-4xl mx-auto">
+          <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-green-600">
             Order Placed Successfully🎉
           </h1>
           <h2 className="text-xl lg:text-2xl font-semibold  text-gray-700">
             Order ID: {orderId}
           </h2>
-          <Link to={"/profile/orders"}><h2 className="text-blue-600 sm:text-lg mb-8 cursor-pointer">See orders</h2></Link>
+          <Link to={"/profile/orders"}><h2 className="text-blue-600 sm:text-lg mb-4 cursor-pointer">See orders</h2></Link>
           <div className="mb-8">
             <h3 className="text-lg lg:text-xl font-semibold mb-4 text-gray-700">
               Order Details

@@ -1,9 +1,12 @@
 import axios from "axios";
 import { ShowToast } from "../utils/ToastUtils";
 
+// export const backendUrl = "http://localhost:1111";
+export const backendUrl = "https://my-shope-backend.vercel.app/";
+
 export const fetchItemData = async (setItems) => {
   try {
-    const response = await axios.get("https://my-shope-backend.onrender.com/item/all-items");
+    const response = await axios.get(`${backendUrl}/item/all-items`);
     const { data } = response;
 
     if (data.success) {
@@ -17,7 +20,12 @@ export const fetchItemData = async (setItems) => {
   }
 };
 
-export const updateCurrentUser = async (setCurrentUser, setCart, setWishList,setOrders) => {
+export const updateCurrentUser = async (
+  setCurrentUser,
+  setCart,
+  setWishList,
+  setOrders
+) => {
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -25,7 +33,7 @@ export const updateCurrentUser = async (setCurrentUser, setCart, setWishList,set
       return;
     }
 
-    const response = await axios.get("https://my-shope-backend.onrender.com/user/currentUser", {
+    const response = await axios.get(`${backendUrl}/user/currentUser`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -35,8 +43,8 @@ export const updateCurrentUser = async (setCurrentUser, setCart, setWishList,set
     if (data.success) {
       setCurrentUser(data.user);
       setCart(data.user.cart || []);
-      setWishList(data.user.wishlist || [])
-      setOrders(data.user.orders)
+      setWishList(data.user.wishlist || []);
+      setOrders(data.user.orders);
     } else {
       ShowToast("Failed to fetch user data", "error");
     }
@@ -56,7 +64,7 @@ export const updateUser = async (updatedDetails) => {
     }
 
     const { data } = await axios.put(
-      "https://my-shope-backend.onrender.com/user/update",
+      `${backendUrl}/user/update`,
       updatedDetails,
       {
         headers: {
@@ -69,7 +77,7 @@ export const updateUser = async (updatedDetails) => {
       return true;
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     console.log;
     if (error.response) {
       ShowToast(error.response.data.message, "error");

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Popup from "../components/Popup";
 import { updateUser } from "../context/apiCallFunctions";
 import { ShowToast } from "../utils/ToastUtils";
+import Navbar from "../components/Navbar";
 
 function Checkout() {
   const { cart, setCart, orders, setOrders, currentUser } =
@@ -79,6 +80,7 @@ function Checkout() {
 
   return (
     <>
+    <Navbar/>
       {showPopup ? (
         <Popup
           message={"Is this the correct delivery address?"}
@@ -88,8 +90,8 @@ function Checkout() {
       ) : (
         ""
       )}
-      <div className="container mx-auto pt-16 sm:pt-20 lg:pt-24 px-2 lg:px-6">
-        <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold sm:mb-4 lg:mb-8 lg:text-center">
+      <div className="container mx-auto pt-2 sm:pt-20 lg:pt-20 px-2 lg:px-6">
+        <h1 className="text-lg text-center sm:text-2xl lg:text-3xl font-bold sm:mb-4 lg:mb-5 lg:text-center">
           Checkout
         </h1>
         <div className="w-full">

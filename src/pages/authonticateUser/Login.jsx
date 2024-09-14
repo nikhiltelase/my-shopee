@@ -4,7 +4,9 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { ShowToast } from "../../utils/ToastUtils";
 import { contextData } from "../../context/ContextApi";
-import ButtonLoader from "../../components/loaders/ButtonLoader";
+import Loader from "../../components/loaders/Loader";
+import { backendUrl } from "../../context/apiCallFunctions";
+import Navbar from "../../components/Navbar";
 
 const Login = () => {
   const { initializeData } = useContext(contextData);
@@ -69,10 +71,7 @@ const Login = () => {
       // Make API call here
       setShowLoader(true);
       try {
-        const { data } = await axios.post(
-          "https://my-shope-backend.onrender.com/user/login",
-          user
-        );
+        const { data } = await axios.post(`${backendUrl}/user/login`, user);
         if (data.success) {
           localStorage.setItem("authToken", data.token);
           ShowToast("Login successfully!");
@@ -80,7 +79,7 @@ const Login = () => {
           navigate("/");
         }
       } catch (error) {
-        if(error.response){
+        if (error.response) {
           if (error.response.status == 404) {
             setEmailError("Email not found");
             emailRef.current.focus();
@@ -90,7 +89,7 @@ const Login = () => {
           } else {
             ShowToast(error.response.data.message, "error");
           }
-        }else{
+        } else {
           ShowToast(error.message, "error");
         }
       } finally {
@@ -101,7 +100,8 @@ const Login = () => {
 
   return (
     <>
-      <div className="container mx-auto h-screen flex justify-center items-center">
+    <Navbar/>
+      <div className="sm:h-screen flex justify-center items-center">
         <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
           <form onSubmit={handleSubmit}>
@@ -156,17 +156,14 @@ const Login = () => {
                 Forgot Password?
               </Link>
             </div>
-            <div className="flex items-center justify-between">
-              {showLoader ? (
-                <ButtonLoader text={"Logging"}/>
-              ) : (
-                <button
-                  type="submit"
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Login
-                </button>
-              )}
+            <div className="flex items-center gap-2">
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Login
+              </button>
+              {showLoader ? <Loader width={8} height={8} /> : ""}
             </div>
           </form>
           <p className="text-center text-gray-600 mt-4">

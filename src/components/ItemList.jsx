@@ -3,7 +3,6 @@ import { contextData } from "../context/ContextApi";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
 import Loader from "./loaders/Loader"
-import ButtonLoader from "./loaders/ButtonLoader"
 
 function ItemList({ items }) {
   const navigate = useNavigate();
@@ -108,7 +107,7 @@ function ItemList({ items }) {
           ))}
         </div>
         {items.length === 0 && (
-          <ButtonLoader text={"loading..."}/>
+          <Loader width={"20"} height={"20"}/>
         )}
       </div>
       {showGoToTop && (

@@ -5,6 +5,7 @@ import { contextData } from "../context/ContextApi";
 import RelatedItems from "../components/RelatedItems";
 import { updateUser } from "../context/apiCallFunctions";
 import { ShowToast } from "../utils/ToastUtils";
+import Navbar from "../components/Navbar";
 
 const Specifications = (specification) => {
   const pairs = specification.split(", ");
@@ -98,6 +99,7 @@ function ItemView() {
 
   return (
     <>
+    <Navbar searchBar={true}/>
       <div className="bg-gray-100 mt-16 sm:mt-20 lg:mt-14">
         <div className="mx-auto p-4 lg:p-10 bg-white shadow-lg rounded-lg">
           <div className="flex flex-col lg:flex-row items-center justify-center">

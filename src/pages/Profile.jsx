@@ -15,6 +15,7 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import Popup from "../components/Popup";
+import Navbar from "../components/Navbar";
 
 function Profile() {
   const [showPopup, setShowPopup] = useState(false);
@@ -50,6 +51,7 @@ function Profile() {
 
   return (
     <div className="bg-slate-100 h-screen ">
+      <Navbar/>
        {showPopup && (
         <Popup
           message="Are you sure to logout?"
@@ -57,7 +59,7 @@ function Profile() {
           onConfirm={PopupYes}
         />
       )}
-      <div className="flex flex-col sm:flex-row h-auto sm:h-[610px] mt-16 px-4 sm:px-32 ">
+      <div className="flex flex-col sm:flex-row h-auto sm:h-[610px] mt-2 sm:mt-14 px-4 sm:px-32 ">
         {/*left side */}
         <div className="w-full sm:w-1/4 px-4 py-2 bg-white rounded-lg shadow-lg sm:mt-7 mb-6 sm:mb-0">
           <ul className="grid grid-cols-2 gap-4 sm:pt-10 sm:flex sm:flex-col sm:space-y-6">

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { contextData } from "../../context/ContextApi";
 import { ShowToast } from "../../utils/ToastUtils";
 import { FaUserCircle, FaEdit } from "react-icons/fa";

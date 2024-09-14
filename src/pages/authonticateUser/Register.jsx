@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { ShowToast } from "../../utils/ToastUtils";
+import { backendUrl } from "../../context/apiCallFunctions";
+import Loader from "../../components/loaders/Loader";
+import Navbar from "../../components/Navbar";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +18,7 @@ const Register = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   const nameRef = useRef(null);
   const emailRef = useRef(null);
@@ -33,7 +37,8 @@ const Register = () => {
 
   const validateForm = () => {
     let formErrors = {};
-    let firstErrorField = null;0
+    let firstErrorField = null;
+    0;
 
     if (!formData.name) {
       formErrors.name = "Name is required";
@@ -99,9 +104,10 @@ const Register = () => {
     e.preventDefault();
     if (validateForm()) {
       //making api call
+      setShowLoader(true);
       try {
         const { data } = await axios.post(
-          "https://my-shope-backend.onrender.com/user/register",
+          `${backendUrl}/user/register`,
           formData
         );
         if (data.success) {
@@ -112,16 +118,18 @@ const Register = () => {
         }
       } catch (error) {
         ShowToast(error.response.data.message || "An error occurred.", "error");
+      } finally {
+        setShowLoader(false);
       }
     }
   };
-  
 
   return (
     <>
-      <div className="container mx-auto h-screen flex justify-center items-center sm:mt-7">
-        <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+    <Navbar/>
+      <div className="container sm:h-screen mx-auto  flex justify-center items-center sm:mt-7">
+        <div className="w-full max-w-md bg-white px-8 pt-2 sm:p-8 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-2 sm:mb-6 text-center">Sign Up</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -235,13 +243,14 @@ const Register = () => {
                 </p>
               )}
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
               <button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 Register
               </button>
+              {showLoader ? <Loader width={"8"} height={"8"} /> : ""}
             </div>
           </form>
 

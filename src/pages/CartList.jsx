@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Popup from "../components/Popup";
 import { updateUser } from "../context/apiCallFunctions";
 import { ShowToast } from "../utils/ToastUtils";
+import Navbar from "../components/Navbar";
 
 function CartList() {
   const { cart, setCart, currentUser } = useContext(contextData);
@@ -50,6 +51,7 @@ function CartList() {
 
   return (
     <>
+    <Navbar searchBar={true}/>
       {showPopup && (
         <Popup
           message="Are you sure you want to remove this item?"

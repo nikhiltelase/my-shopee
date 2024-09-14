@@ -1,8 +1,7 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RoutesConfig from "./utils/RoutesConfig";
-import Loader from "./components/loaders/Loader"
-import Navbar from "./components/Navbar";
+import WatchLoader from "./components/loaders/WatchLoader"
 import { ToastContainer } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,13 +22,12 @@ function App() {
         pauseOnHover
         theme="light"
       />
-      <Navbar />
       <Routes>
         {routes.map((route, index) => (
           <Route
             key={index}
             path={route.route}
-            element={<Suspense fallback={<Loader />}>{route.element}</Suspense>}
+            element={<Suspense fallback={<WatchLoader />}>{route.element}</Suspense>}
           />
         ))}
       </Routes>

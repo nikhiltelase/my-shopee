@@ -3,7 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { ShowToast } from "../../utils/ToastUtils";
-import ButtonLoader from "../../components/loaders/ButtonLoader";
+import { backendUrl } from "../../context/apiCallFunctions";
+import Loader from "../../components/loaders/Loader";
+import Navbar from "../../components/Navbar";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -115,10 +117,9 @@ const ForgotPassword = () => {
       // Make API call to send OTP here
       setShowLoader(true);
       try {
-        const { data } = await axios.post(
-          "https://my-shope-backend.onrender.com/user/send-otp",
-          { email }
-        );
+        const { data } = await axios.post(`${backendUrl}/user/send-otp`, {
+          email,
+        });
         if (data.success) {
           ShowToast("Otp send successfully");
           setOtpSent(true);
@@ -149,7 +150,7 @@ const ForgotPassword = () => {
       setShowLoader(true);
       try {
         const { data } = await axios.post(
-          "https://my-shope-backend.onrender.com/user/verify-otp",
+          `${backendUrl}/user/verify-otp`,
           { enteredOtp: otp },
           {
             headers: {
@@ -188,7 +189,7 @@ const ForgotPassword = () => {
       setShowLoader(true);
       try {
         const { data } = await axios.post(
-          "https://my-shope-backend.onrender.com/user/forget-password",
+          `${backendUrl}/user/forget-password`,
           { newPassword },
           {
             headers: {
@@ -214,6 +215,7 @@ const ForgotPassword = () => {
 
   return (
     <>
+    <Navbar/>
       <div className="container mx-auto h-screen flex justify-center items-center">
         <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold mb-6 text-center">
@@ -273,30 +275,24 @@ const ForgotPassword = () => {
 
               <div className="flex items-center justify-between">
                 {otpSent ? (
-                  <div>
-                    {showLoader ? (
-                      <ButtonLoader text={"Verifying"} />
-                    ) : (
-                      <button
-                        type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                      >
-                        Verify OTP
-                      </button>
-                    )}
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="submit"
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Verify OTP
+                    </button>
+                    {showLoader ? <Loader width={"8"} height={"8"} /> : ""}
                   </div>
                 ) : (
-                  <div>
-                    {showLoader ? (
-                      <ButtonLoader text={"Sending"} />
-                    ) : (
-                      <button
-                        type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                      >
-                        Send OTP
-                      </button>
-                    )}
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="submit"
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Send OTP
+                    </button>
+                    {showLoader ? <Loader width={"8"} height={"8"} /> : ""}
                   </div>
                 )}
               </div>
@@ -370,17 +366,14 @@ const ForgotPassword = () => {
                   {errors.confirmPassword}
                 </p>
               </div>
-              <div className="flex items-center justify-between">
-                {showLoader ? (
-                  <ButtonLoader text={"changing password"}/>
-                ) : (
-                  <button
-                    type="submit"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Forget password
-                  </button>
-                )}
+              <div className="flex items-center gap-2">
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Forget password
+                </button>
+                {showLoader ? <Loader /> : ""}
               </div>
             </form>
           )}

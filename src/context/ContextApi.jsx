@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import {
   fetchItemData,
- updateCurrentUser,
+  updateCurrentUser,
   updateUser,
 } from "./apiCallFunctions";
 import { ShowToast } from "../utils/ToastUtils";
@@ -11,16 +11,16 @@ export const contextData = createContext(null);
 const ContextApi = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [cart, setCart] = useState([]);
-  const [wishList, setWishList] = useState([])
-  const [orders, setOrders] = useState([])
+  const [wishList, setWishList] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [items, setItems] = useState([]);
 
   const initializeData = async () => {
-    await fetchItemData(setItems);
     await updateCurrentUser(setCurrentUser, setCart, setWishList, setOrders);
   };
 
-  useEffect(() => {
+  useEffect( () => {
+    fetchItemData(setItems);
     initializeData();
   }, []);
 
@@ -43,8 +43,6 @@ const ContextApi = ({ children }) => {
   const isItemInCart = (itemId) =>
     cart.some((cartItem) => cartItem._id === itemId);
 
-  
-
   const logout = () => {
     localStorage.removeItem("authToken");
     setCurrentUser(null);
@@ -57,7 +55,7 @@ const ContextApi = ({ children }) => {
     cart,
     wishList,
     items,
-    orders, 
+    orders,
     initializeData,
     setCart,
     setWishList,

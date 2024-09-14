@@ -5,7 +5,7 @@ import { contextData } from "../context/ContextApi";
 import Search from "./Search";
 import ProfileDropdown from "./ProfileDropdown";
 
-function Navbar() {
+function Navbar({ searchBar }) {
   const { cart, currentUser } = useContext(contextData);
   const [scrollY, setScrollY] = useState(0);
   const [showDropDown, setShowDropDown] = useState(false);
@@ -36,15 +36,13 @@ function Navbar() {
             {/* small screen  */}
             <div className="flex items-center gap-4 sm:gap-6 sm:hidden">
               {currentUser ? (
-                <div
-                  onMouseEnter={() => setShowDropDown(true)}
-                  onMouseLeave={() => setShowDropDown(false)}
-                  className="relative text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 cursor-pointer"
-                >
-                  <FaRegUserCircle />
-                  {currentUser.name.split(" ")[0]}
-                  {showDropDown && <ProfileDropdown />}
-                </div>
+                <Link to={"/profile/userDetails"}>
+                  <div className="relative text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 cursor-pointer">
+                    <FaRegUserCircle />
+                    {currentUser.name.split(" ")[0]}
+                    {showDropDown && <ProfileDropdown />}
+                  </div>
+                </Link>
               ) : (
                 <Link
                   to="/login"
@@ -68,28 +66,30 @@ function Navbar() {
             </div>
           </div>
 
-          <div
-            className={`w-full fixed  ${
+          {searchBar?(<div
+            className={`w-full fixed z-10  ${
               scrollY > 60 ? "top-0  z-50" : "top-16"
             } sm:static bg-white sm:bg-transparent transition-all duration-300 ease-in-out sm:w-auto xl:w-3/4`}
           >
             <div className="shadow-lg m-2  rounded-lg  sm:shadow-none sm:m-0">
               <Search />
             </div>
-          </div>
+          </div>): ""}
 
           {/* large screen  */}
           <div className="hidden sm:flex items-center gap-4 sm:gap-10">
             {currentUser ? (
-              <div
-                onMouseEnter={() => setShowDropDown(true)}
-                onMouseLeave={() => setShowDropDown(false)}
-                className="relative text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 cursor-pointer "
-              >
-                <FaRegUserCircle />
-                {currentUser.name.split(" ")[0]}
-                {showDropDown && <ProfileDropdown />}
-              </div>
+              <Link to={"/profile/userDetails"}>
+                <div
+                  onMouseEnter={() => setShowDropDown(true)}
+                  onMouseLeave={() => setShowDropDown(false)}
+                  className="relative text-white text-xl sm:text-2xl flex items-center gap-1 sm:gap-2 cursor-pointer "
+                >
+                  <FaRegUserCircle />
+                  {currentUser.name.split(" ")[0]}
+                  {showDropDown && <ProfileDropdown />}
+                </div>
+              </Link>
             ) : (
               <Link
                 to="/login"
