@@ -2,7 +2,7 @@ import axios from "axios";
 import { ShowToast } from "../utils/ToastUtils";
 
 // export const backendUrl = "http://localhost:1111";
-export const backendUrl = "https://my-shope-backend.vercel.app/";
+export const backendUrl = "https://my-shope-backend.onrender.com";
 
 export const fetchItemData = async (setItems) => {
   try {
