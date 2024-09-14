@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import RoutesConfig from "./utils/RoutesConfig";
 import WatchLoader from "./components/loaders/WatchLoader"
 import { ToastContainer } from "react-toastify"; 
@@ -9,7 +9,7 @@ const routes = RoutesConfig();
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
@@ -31,7 +31,7 @@ function App() {
           />
         ))}
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
