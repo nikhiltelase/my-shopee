@@ -8,7 +8,7 @@ export const backendUrl = "https://my-shope-backend.onrender.com";
 export const fetchItemData = async (items, setItems, setHasMore) => {
   try {
     const { data } = await axios.get(
-      `${backendUrl}/item/all-items?limit=4&start=${items.length}`
+      `${backendUrl}/item/all-items?limit=20&start=${items.length}`
     );
 
     if (data.success) {
