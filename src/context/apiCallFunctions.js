@@ -4,13 +4,16 @@ import { ShowToast } from "../utils/ToastUtils";
 // export const backendUrl = "http://localhost:1111";
 export const backendUrl = "https://my-shope-backend.onrender.com";
 
-export const fetchItemData = async (setItems) => {
+export const fetchItemData = async (items, setItems, setHasMore) => {
   try {
-    const response = await axios.get(`${backendUrl}/item/all-items`);
-    const { data } = response;
-
+    const { data } = await axios.get(
+      `${backendUrl}/item/all-items?limit=4&start=${items.length}`
+    );
+    if (data.items.length == 0) {
+      setHasMore(false);
+    }
     if (data.success) {
-      setItems(data.items);
+      setItems([...items, ...data.items]);
     } else {
       ShowToast("Failed to fetch items", "error");
     }

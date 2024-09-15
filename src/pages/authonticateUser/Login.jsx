@@ -9,7 +9,7 @@ import { backendUrl } from "../../context/apiCallFunctions";
 import Navbar from "../../components/Navbar";
 
 const Login = () => {
-  const { initializeData } = useContext(contextData);
+  const { initializeUser } = useContext(contextData);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -75,7 +75,7 @@ const Login = () => {
         if (data.success) {
           localStorage.setItem("authToken", data.token);
           ShowToast("Login successfully!");
-          initializeData();
+          initializeUser();
           navigate("/");
         }
       } catch (error) {

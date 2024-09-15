@@ -5,7 +5,7 @@ import { FaUserCircle, FaEdit } from "react-icons/fa";
 import { updateUser } from "../../context/apiCallFunctions";
 
 function UserDetails() {
-  const { currentUser, initializeData } = useContext(contextData);
+  const { currentUser, initializeUser } = useContext(contextData);
   const [isEditing, setIsEditing] = useState(false);
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -33,7 +33,7 @@ function UserDetails() {
   const handleUpdate = async () => {
       const updateStatus = await updateUser(userDetails)
       if (updateStatus) {
-        initializeData()
+        initializeUser()
         setIsEditing(false);
         ShowToast("User details updated successfully!");
       } 

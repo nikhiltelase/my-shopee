@@ -14,7 +14,7 @@ function Home() {
       <Navbar searchBar={true}/>
       <CategoryLinks />
       <OfferSlider />
-      <ItemList items={items} />
+      <ItemList displayItems={items} />
       <Footer />
     </div>
   );
