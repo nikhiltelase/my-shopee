@@ -2,7 +2,7 @@ import axios from "axios";
 import { ShowToast } from "../utils/ToastUtils";
 
 export const backendUrl = "http://localhost:1111";
-// export const backendUrl = "https://my-shope-backend.onrender.com";
+export const backendUrl = "https://my-shope-backend.onrender.com";
 
 // Fetch item data with pagination
 export const fetchItemData = async (
@@ -13,7 +13,7 @@ export const fetchItemData = async (
 ) => {
   try {
     const { data } = await axios.get(
-      `${backendUrl}/item/all-items?limit=1&start=${items.length}`
+      `${backendUrl}/item/all-items?limit=4&start=${items.length}`
     );
 
     if (data.success) {
