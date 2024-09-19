@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ShowToast } from "../utils/ToastUtils";
 
-export const backendUrl = "http://localhost:1111";
+// export const backendUrl = "http://localhost:1111";
 export const backendUrl = "https://my-shope-backend.onrender.com";
 
 // Fetch item data with pagination
