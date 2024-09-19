@@ -1,14 +1,19 @@
 import axios from "axios";
 import { ShowToast } from "../utils/ToastUtils";
 
-// export const backendUrl = "http://localhost:1111";
-export const backendUrl = "https://my-shope-backend.onrender.com";
+export const backendUrl = "http://localhost:1111";
+// export const backendUrl = "https://my-shope-backend.onrender.com";
 
 // Fetch item data with pagination
-export const fetchItemData = async (items, setItems, setHasMore) => {
+export const fetchItemData = async (
+  items,
+  setItems,
+  setHasMore,
+  setItemsLoader
+) => {
   try {
     const { data } = await axios.get(
-      `${backendUrl}/item/all-items?limit=10&start=${items.length}`
+      `${backendUrl}/item/all-items?limit=1&start=${items.length}`
     );
 
     if (data.success) {
@@ -16,7 +21,6 @@ export const fetchItemData = async (items, setItems, setHasMore) => {
       if (data.items.length === 0) {
         setHasMore(false);
       }
-
       // Append fetched items to the existing list
       setItems([...items, ...data.items]);
     } else {
@@ -30,6 +34,8 @@ export const fetchItemData = async (items, setItems, setHasMore) => {
       error.response?.data?.message ||
       "An error occurred while fetching items.";
     ShowToast(errorMessage, "error");
+  } finally {
+    setItemsLoader(false);
   }
 };
 

@@ -7,7 +7,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 function ItemList({ displayItems }) {
   const navigate = useNavigate();
-  const { addToCart, isItemInCart, hasMore, getItems, items } =
+  const { addToCart, isItemInCart, hasMore, getItems, items, itemsLoader } =
     useContext(contextData);
   const [showGoToTop, setShowGoToTop] = useState(false);
   const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -122,7 +122,7 @@ function ItemList({ displayItems }) {
               </div>
             ))}
           </div>
-          {/* {items.length === 0 && <Loader width={"20"} height={"20"} />} */}
+          {itemsLoader && <Loader width={"20"} height={"20"} />} 
         </div>
         {showGoToTop && (
           <button

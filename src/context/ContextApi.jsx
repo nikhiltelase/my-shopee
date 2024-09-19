@@ -15,13 +15,15 @@ const ContextApi = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true)
+  const [itemsLoader, setItemsLoader] = useState(false)
 
   const initializeUser = async () => {
     await updateCurrentUser(setCurrentUser, setCart, setWishList, setOrders);
   };
 
   const getItems = async ()=> {
-    await fetchItemData(items, setItems, setHasMore)
+    setItemsLoader(true)
+    await fetchItemData(items, setItems, setHasMore, setItemsLoader)
   }
 
   useEffect(() => {
@@ -62,6 +64,7 @@ const ContextApi = ({ children }) => {
     items,
     hasMore,
     orders,
+    itemsLoader,
     getItems,
     initializeUser,
     setCart,
