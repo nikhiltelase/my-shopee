@@ -122,7 +122,16 @@ function ItemList({ displayItems }) {
               </div>
             ))}
           </div>
-          {itemsLoader && <Loader width={"20"} height={"20"} />} 
+          {itemsLoader && items.length === 0 ? (
+            <Loader width={"20"} height={"20"} />
+          ) : (
+            ""
+          )}
+          {!itemsLoader && items.length === 0 ? (
+            <p className="text-red-500">Item not found</p>
+          ) : (
+            ""
+          )}
         </div>
         {showGoToTop && (
           <button
