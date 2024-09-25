@@ -1,8 +1,8 @@
 import axios from "axios";
 import { ShowToast } from "../utils/ToastUtils";
 
-// export const backendUrl = "http://localhost:1111";
-export const backendUrl = "https://my-shope-backend.onrender.com";
+export const backendUrl = "http://localhost:1111";
+// export const backendUrl = "https://my-shope-backend.onrender.com";
 
 // Fetch item data with pagination
 export const fetchItemData = async (
@@ -75,7 +75,7 @@ export const updateCurrentUser = async (
 };
 
 // Update user information
-export const updateUser = async (updatedDetails) => {
+export const updateUser = async (updatedDetails, setShowLoader) => {
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -106,6 +106,8 @@ export const updateUser = async (updatedDetails) => {
     } else {
       ShowToast(error.message, "error");
     }
-    return false; // Return false in case of an error
+    return false; // Return false in case of an er::":ror
+  } finally{
+    setShowLoader(false)
   }
 };

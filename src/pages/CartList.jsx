@@ -11,17 +11,18 @@ function CartList() {
   const { cart, setCart, currentUser } = useContext(contextData);
   const [showPopup, setShowPopup] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
 
   const handleClosePopup = () => {
     setShowPopup(false);
   };
 
   const handleConfirmRemove = async () => {
+    setShowPopup(false);
     const updatedCart = cart.filter((item) => item._id !== itemToRemove._id);
-    const updateStatus = await updateUser({ cart: updatedCart });
+    const updateStatus = await updateUser({ cart: updatedCart }, setShowLoader);
     if (updateStatus) {
       ShowToast(`${itemToRemove.name} removed`);
-      setShowPopup(false);
       setCart(updatedCart);
     }
   };
@@ -51,7 +52,7 @@ function CartList() {
 
   return (
     <>
-    <Navbar searchBar={true}/>
+      <Navbar searchBar={true} />
       {showPopup && (
         <Popup
           message="Are you sure you want to remove this item?"
