@@ -74,7 +74,7 @@ export const updateCurrentUser = async (
 };
 
 // Update user information
-export const updateUser = async (updatedDetails, setShowLoader) => {
+export const updateUser = async (updatedDetails) => {
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -106,7 +106,5 @@ export const updateUser = async (updatedDetails, setShowLoader) => {
       ShowToast(error.message, "error");
     }
     return false; // Return false in case of an er::":ror
-  } finally{
-    setShowLoader(false)
-  }
+  } 
 };

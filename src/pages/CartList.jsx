@@ -11,7 +11,6 @@ function CartList() {
   const { cart, setCart, currentUser } = useContext(contextData);
   const [showPopup, setShowPopup] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
-  const [showLoader, setShowLoader] = useState(false);
 
   const handleClosePopup = () => {
     setShowPopup(false);
@@ -20,7 +19,7 @@ function CartList() {
   const handleConfirmRemove = async () => {
     setShowPopup(false);
     const updatedCart = cart.filter((item) => item._id !== itemToRemove._id);
-    const updateStatus = await updateUser({ cart: updatedCart }, setShowLoader);
+    const updateStatus = await updateUser({ cart: updatedCart });
     if (updateStatus) {
       ShowToast(`${itemToRemove.name} removed`);
       setCart(updatedCart);
